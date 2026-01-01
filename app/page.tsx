@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
+// --- Particle Class Definition ---
 class Point {
   x: number;
   y: number;
@@ -149,6 +150,7 @@ class Point {
   }
 }
 
+// --- Main Component ---
 const Portfolio = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [age, setAge] = useState('');
@@ -529,13 +531,15 @@ const Portfolio = () => {
         </div>
       </main>
 
-      <div className={`fixed bottom-4 left-6 text-xs font-mono opacity-50 select-none pointer-events-none transition-all duration-300 ${isParty ? 'animate-pulse text-red-500 font-bold' : ''}`}>
+      {/* Responsive Fix: Added max-width and truncate for mobile safety */}
+      <div className={`fixed bottom-4 left-6 max-w-[80%] sm:max-w-none truncate text-xs font-mono opacity-50 select-none pointer-events-none transition-all duration-300 ${isParty ? 'animate-pulse text-red-500 font-bold' : ''}`}>
         <span className="mr-2">⚡</span>
         {statusText}
         <span className="animate-pulse ml-1">_</span>
       </div>
 
-      <div className={`fixed bottom-4 right-6 text-xs font-mono select-none transition-all duration-500 ${isMatrix ? 'text-[#00ff41]' : 'text-black'} opacity-40 hover:opacity-100`}>
+      {/* Responsive Fix: Added 'hidden sm:block' so this only shows on tablet/desktop */}
+      <div className={`fixed bottom-4 right-6 text-xs font-mono select-none transition-all duration-500 ${isMatrix ? 'text-[#00ff41]' : 'text-black'} opacity-40 hover:opacity-100 hidden sm:block`}>
         [!] OPEN CONSOLE (F12) FOR HINTS
         <span className="animate-pulse ml-1">▋</span>
       </div>
