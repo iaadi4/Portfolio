@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
-// --- Particle Class Definition ---
 class Point {
   x: number;
   y: number;
@@ -150,7 +149,6 @@ class Point {
   }
 }
 
-// --- Main Component ---
 const Portfolio = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [age, setAge] = useState('');
@@ -160,6 +158,8 @@ const Portfolio = () => {
   const [showDebug, setShowDebug] = useState(false); 
   const [statusText, setStatusText] = useState("> system_ready");
   
+  const [showLogoHint, setShowLogoHint] = useState(false);
+
   const [fps, setFps] = useState(0);
   const [particleCount, setParticleCount] = useState(45);
   
@@ -198,6 +198,14 @@ const Portfolio = () => {
     setStatusText(isMatrixRef.current ? "> matrix_loaded" : "> system_restored");
   };
 
+  // Timer to show the "Click Me" bubble after 3 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLogoHint(true);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
   useEffect(() => {
     const updateAge = () => {
       const birthDate = new Date('2004-10-08');
@@ -216,22 +224,28 @@ const Portfolio = () => {
     console.clear();
     console.log("%c // SYSTEM ACCESS GRANTED // ", styleTitle);
     console.log(`
-      COMMAND LIST:
-      -------------
-      [G] ..... Gravity Toggle
-      [F] ..... Freeze Time
-      [T] ..... Trails / Ghost Mode
-      [E] ..... EXPLOSION
-      [D] ..... Debug Overlay
-      [B] ..... Binary Mode (Hold)
-      [SPACE] . Time Warp (Hold)
+       ════════════════════════════════════════════
+                 INTERACTIVE COMMANDS              
+       ════════════════════════════════════════════
       
-      SECRET CODES:
-      -------------
-      > Konami Code (↑↑↓↓←→←→ba)
-      > Click 'years_runtime'
-      > Click Logo (Spawn)
-      > Click & Drag (Force Push)
+      Press Keys to Control the Animation:
+      
+      [G] - Toggle Gravity ON/OFF
+      [F] - Freeze/Unfreeze the Animation
+      [T] - Toggle Particle Trails (Ghost Mode)
+      [E] - EXPLOSION! (Launch all particles outward)
+      [D] - Show/Hide Debug Information Overlay
+      [B] - Binary Mode (Hold to display 1s and 0s)
+      [SPACE] - Time Warp Mode (Hold to reverse direction)
+      
+       ════════════════════════════════════════════
+                HIDDEN EASTER EGGS                 
+       ════════════════════════════════════════════
+
+      1. Konami Code: Press UP UP DOWN DOWN LEFT RIGHT LEFT RIGHT B A
+      2. Click on the "years_runtime" text
+      3. Click the Logo to Spawn New Particles
+      4. Click & Drag with Mouse to Push Particles Away
     `);
   }, []);
 
@@ -452,26 +466,47 @@ const Portfolio = () => {
         <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
           
           <div className="flex flex-col gap-8 text-left">
-            <svg
-              className={`w-16 h-16 transition-all duration-300 ease-in-out cursor-pointer hover:scale-110 active:scale-95 active:rotate-12 ${isMatrix ? 'stroke-[#00ff41]' : 'stroke-black'}`}
-              viewBox="0 0 100 100"
-              xmlns="http://www.w3.org/2000/svg"
-              onClick={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                spawnParticles(10, rect.left + 32, rect.top + 32);
-              }}
-            >
-              <circle cx="50" cy="30" r="15" fill="none" strokeWidth="2" />
-              <path d="M 35 30 Q 35 25 40 25 Q 45 25 45 30" fill="none" strokeWidth="1.5" />
-              <path d="M 55 30 Q 55 25 60 25 Q 65 25 65 30" fill="none" strokeWidth="1.5" />
-              <line x1="45" y1="35" x2="55" y2="35" strokeWidth="1.5" />
-              <path d="M 50 45 L 50 70" strokeWidth="2" />
-              <path d="M 50 55 L 35 65" strokeWidth="2" />
-              <path d="M 50 55 L 65 65" strokeWidth="2" />
-              <path d="M 50 70 L 35 85" strokeWidth="2" />
-              <path d="M 50 70 L 65 85" strokeWidth="2" />
-              <rect x="30" y="45" width="8" height="12" fill={isMatrix ? '#00ff41' : '#000'} />
-            </svg>
+            <div className="relative w-max group">
+              <svg
+                className={`w-16 h-16 transition-all duration-300 ease-in-out cursor-pointer hover:scale-110 active:scale-95 active:rotate-12 ${isMatrix ? 'stroke-[#00ff41]' : 'stroke-black'}`}
+                viewBox="0 0 100 100"
+                xmlns="http://www.w3.org/2000/svg"
+                onClick={(e) => {
+                  setShowLogoHint(false);
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  spawnParticles(10, rect.left + 32, rect.top + 32);
+                }}
+              >
+                <circle cx="50" cy="30" r="15" fill="none" strokeWidth="2" />
+                <path d="M 35 30 Q 35 25 40 25 Q 45 25 45 30" fill="none" strokeWidth="1.5" />
+                <path d="M 55 30 Q 55 25 60 25 Q 65 25 65 30" fill="none" strokeWidth="1.5" />
+                <line x1="45" y1="35" x2="55" y2="35" strokeWidth="1.5" />
+                <path d="M 50 45 L 50 70" strokeWidth="2" />
+                <path d="M 50 55 L 35 65" strokeWidth="2" />
+                <path d="M 50 55 L 65 65" strokeWidth="2" />
+                <path d="M 50 70 L 35 85" strokeWidth="2" />
+                <path d="M 50 70 L 65 85" strokeWidth="2" />
+                <rect x="30" y="45" width="8" height="12" fill={isMatrix ? '#00ff41' : '#000'} />
+              </svg>
+
+              <div 
+                className={`
+                  absolute left-full top-0 ml-4 px-3 py-2 w-max
+                  border rounded-xl text-xs font-bold font-mono
+                  transition-all duration-500 ease-out pointer-events-none select-none
+                  animate-bounce
+                  ${showLogoHint ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}
+                  ${isMatrix ? 'bg-black border-[#00ff41] text-[#00ff41]' : 'bg-white border-black text-black'}
+                  
+                  /* Arrow pointing to logo */
+                  before:content-[''] before:absolute before:top-1/2 before:right-full before:-translate-y-1/2
+                  before:border-[6px] before:border-transparent
+                  ${isMatrix ? 'before:border-r-[#00ff41]' : 'before:border-r-black'}
+                `}
+              >
+                &lt; click_me /&gt;
+              </div>
+            </div>
 
             <div>
               <h1 className="text-4xl sm:text-6xl font-bold tracking-tight mb-3">
@@ -531,17 +566,19 @@ const Portfolio = () => {
         </div>
       </main>
 
-      {/* Responsive Fix: Added max-width and truncate for mobile safety */}
       <div className={`fixed bottom-4 left-6 max-w-[80%] sm:max-w-none truncate text-xs font-mono opacity-50 select-none pointer-events-none transition-all duration-300 ${isParty ? 'animate-pulse text-red-500 font-bold' : ''}`}>
         <span className="mr-2">⚡</span>
         {statusText}
         <span className="animate-pulse ml-1">_</span>
       </div>
 
-      {/* Responsive Fix: Added 'hidden sm:block' so this only shows on tablet/desktop */}
-      <div className={`fixed bottom-4 right-6 text-xs font-mono select-none transition-all duration-500 ${isMatrix ? 'text-[#00ff41]' : 'text-black'} opacity-40 hover:opacity-100 hidden sm:block`}>
-        [!] OPEN CONSOLE (F12) FOR HINTS
-        <span className="animate-pulse ml-1">▋</span>
+      <div 
+        className={`hidden md:block fixed bottom-4 right-6 text-sm font-mono select-none font-bold
+                    text-amber-500 border border-amber-500/50 bg-amber-500/10 px-4 py-2 rounded
+                    animate-pulse cursor-help z-50`}
+        title="Open Developer Console (F12)"
+      >
+        ⚠ OPEN CONSOLE TO SEE SECRETS ⚠
       </div>
 
       {showDebug && (
