@@ -451,7 +451,7 @@ const Portfolio = () => {
     { href: 'https://github.com/iaadi4', label: 'GitHub' },
     { href: 'https://www.linkedin.com/in/aditya-singh-3274101b4/', label: 'LinkedIn' },
     { href: 'https://x.com/iaadi8', label: 'Twitter' },
-    { href: 'https://drive.google.com/file/d/1v74jr7welGTFPPtJICAfzkeb9Kz71HGG/view?usp=sharing', label: 'Resume' },
+    { href: 'https://drive.google.com/file/d/1NpxFv6u-0WxuK_HD-bzUsEIuEKk8qmwF/view?usp=sharing', label: 'Resume' },
   ];
 
   return (
@@ -582,7 +582,7 @@ const Portfolio = () => {
       </div>
 
       {showDebug && (
-        <div className="fixed top-4 right-4 bg-black/80 text-[#00ff41] p-4 font-mono text-xs rounded border border-[#00ff41] z-50 pointer-events-none">
+        <div className="fixed bottom-4 right-4 md:top-4 md:bottom-auto bg-black/80 text-[#00ff41] p-3 md:p-4 font-mono text-xs rounded border border-[#00ff41] z-50 pointer-events-none">
           <div>FPS: {fps}</div>
           <div>PARTICLES: {particleCount}</div>
           <div>MOUSE: {mouseRef.current.x?.toFixed(0) || 'N/A'}, {mouseRef.current.y?.toFixed(0) || 'N/A'}</div>
