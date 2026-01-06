@@ -5,9 +5,18 @@ import React, { useEffect, useRef, useState } from "react";
 // --- Magnetic Component for Cool Buttons ---
 const Magnetic = ({ children }: { children: React.ReactNode }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const handleMouse = (e: React.MouseEvent) => {
+    if (isMobile) return; // Disable effect on mobile
     const { clientX, clientY } = e;
     if (!ref.current) return;
     const { height, width, left, top } = ref.current.getBoundingClientRect();
@@ -194,7 +203,8 @@ class Point {
       }
     }
 
-    // Map speed to color warmth
+    // Map speed to color warmth - REMOVED per user request
+    /*
     const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
     if (!isParty && !isMatrix && isDarkMode) {
       if (speed > 5) {
@@ -205,6 +215,7 @@ class Point {
         ctx.fillStyle = "#ffaa00"; // Warm Orange
       }
     }
+    */
 
     ctx.fillStyle = ctx.fillStyle || color; // Fallback
     ctx.strokeStyle = ctx.fillStyle;
@@ -213,13 +224,16 @@ class Point {
     ctx.strokeStyle = color;
 
     // Optimized: Removed heavy shadowBlur. The cursor light will provide the "glow" atmosphere.
-    // But for light mode, let's add a subtle dark glow/shadow to make white bg interesting
+    // Performance Fix: ShadowBlur is extremely expensive in light mode on some browsers.
+    /*
     if (!isDarkMode && !isMatrix && !isParty) {
       ctx.shadowBlur = 2;
       ctx.shadowColor = "rgba(0, 0, 0, 0.2)";
     } else {
       ctx.shadowBlur = 0;
     }
+    */
+    ctx.shadowBlur = 0;
 
     if (isTrails && this.history && this.history.length > 1) {
       ctx.beginPath();
@@ -1090,7 +1104,7 @@ const Portfolio = () => {
       {showHelp && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-all duration-300">
           <div
-            className={`relative max-w-lg w-full p-8 rounded-2xl border shadow-2xl overflow-hidden ${
+            className={`relative max-w-lg w-full p-5 sm:p-8 rounded-2xl border shadow-2xl overflow-hidden ${
               isDarkMode
                 ? "bg-black/90 border-white/20 text-white"
                 : "bg-white/90 border-black/10 text-black"
@@ -1174,14 +1188,14 @@ const Portfolio = () => {
                   return (
                     <div
                       key={secret.code}
-                      className={`flex items-center gap-3 text-xs ${
+                      className={`flex items-start sm:items-center gap-2 sm:gap-3 text-xs ${
                         isUnlocked ? "opacity-100" : "opacity-60"
                       }`}
                     >
                       {" "}
                       {/* UI: Visibility Fix */}
                       <span
-                        className={`px-2 py-0.5 rounded border min-w-[60px] text-center font-bold ${
+                        className={`shrink-0 px-2 py-0.5 rounded border min-w-[60px] text-center font-bold ${
                           isUnlocked
                             ? "bg-white/10 border-white text-white"
                             : "bg-black/10 border-black/20"
@@ -1189,7 +1203,7 @@ const Portfolio = () => {
                       >
                         [{isUnlocked ? secret.code : "LOCKED"}]
                       </span>
-                      <span className="font-mono truncate">
+                      <span className="font-mono leading-tight flex-1">
                         {isUnlocked || revealSecrets
                           ? secret.desc
                           : "??? (Access Denied)"}
