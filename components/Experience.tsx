@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ExternalLink } from "lucide-react";
+import Link from "next/link";
 
 interface ExperienceItem {
   company: string;
@@ -49,7 +51,18 @@ export default function Experience() {
               <div className="absolute -left-[31px] top-1.5 w-3 h-3 bg-neutral-200 dark:bg-neutral-800 rounded-full border-2 border-white dark:border-black" />
               <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-2">
                 <h4 className="font-medium text-lg text-neutral-900 dark:text-neutral-100">
-                  {exp.company}
+                  {exp.link ? (
+                    <Link
+                      href={exp.link}
+                      target="_blank"
+                      className="inline-flex items-center gap-1 hover:underline"
+                    >
+                      {exp.company}
+                      <ExternalLink size={14} className="inline" />
+                    </Link>
+                  ) : (
+                    exp.company
+                  )}
                 </h4>
                 <span className="text-sm text-neutral-500">{exp.period}</span>
               </div>

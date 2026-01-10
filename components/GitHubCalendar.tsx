@@ -59,8 +59,8 @@ export default function Activity() {
             <ActivityCalendar
               data={data}
               theme={{
-                light: ["#1a1a1a", "#404040", "#737373", "#a6a6a6", "#ffffff"],
-                dark: ["#0a0a0a", "#262626", "#525252", "#a3a3a3", "#ffffff"],
+                light: ["#0a0a0a", "#404040", "#737373", "#b3b3b3", "#ffffff"],
+                dark: ["#0a0a0a", "#2a2a2a", "#525252", "#909090", "#ffffff"],
               }}
               colorScheme={theme === "dark" ? "dark" : "light"}
               blockSize={12}

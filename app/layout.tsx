@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "Aditya Singh | FullStack Developer",
   description:
     "Portfolio of Aditya Singh, a Full Stack Developer & Web3 enthusiast.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({

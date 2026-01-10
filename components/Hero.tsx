@@ -1,8 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Github, Linkedin, Twitter, FileText, Mail, ExternalLink } from "lucide-react";
+import {
+  Github,
+  Linkedin,
+  Twitter,
+  FileText,
+  Mail,
+  ExternalLink,
+} from "lucide-react";
 import Link from "next/link";
+import LeetCodeIcon from "./icons/LeetCodeIcon";
+import CodeChefIcon from "./icons/CodeChefIcon";
+import CodeforcesIcon from "./icons/CodeforcesIcon";
 
 export default function Hero() {
   return (
@@ -19,22 +29,12 @@ export default function Hero() {
           Full Stack, Devops & Web3 Developer
         </h2>
         <p className="text-lg text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed">
-          I'm a Founding Engineer at{" "}
-          <Link
-            href="https://www.draviya.com"
-            target="_blank"
-            className="font-medium text-neutral-900 dark:text-white inline-flex items-center gap-1 hover:underline"
-          >
-            Draviya
-            <ExternalLink size={14} className="inline" />
-          </Link>{" "}
-          and a pre-final year student at{" "}
+          I'm a pre-final year student at{" "}
           <strong className="font-medium text-neutral-900 dark:text-white">
             IIIT Ranchi
           </strong>
           . I build high performance and scalable web applications, specializing
-          in backend architecture, DevOps, and cloud infrastructure. Currently
-          exploring
+          in backend architecture and cloud infrastructure. Currently exploring
           <span className="inline-block mx-1 px-2 py-0.5 bg-neutral-100 dark:bg-neutral-800 rounded text-sm font-medium">
             Web3
           </span>{" "}
@@ -75,6 +75,30 @@ export default function Hero() {
             <Twitter size={22} />
           </Link>
           <Link
+            href="https://leetcode.com/u/iaadi4/"
+            target="_blank"
+            className="text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white transition-colors"
+            aria-label="LeetCode"
+          >
+            <LeetCodeIcon size={22} />
+          </Link>
+          <Link
+            href="https://www.codechef.com/users/iaadi7"
+            target="_blank"
+            className="text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white transition-colors"
+            aria-label="CodeChef"
+          >
+            <CodeChefIcon size={22} />
+          </Link>
+          <Link
+            href="https://codeforces.com/profile/chineseremaindertheoram"
+            target="_blank"
+            className="text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white transition-colors"
+            aria-label="Codeforces"
+          >
+            <CodeforcesIcon size={22} />
+          </Link>
+          <Link
             href="mailto:adityasingh40675@gmail.com"
             className="text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white transition-colors"
             aria-label="Email"
@@ -82,7 +106,7 @@ export default function Hero() {
             <Mail size={22} />
           </Link>
           <Link
-            href="https://drive.google.com/file/d/1NpxFv6u-0WxuK_HD-bzUsEIuEKk8qmwF/view?usp=sharing"
+            href="https://drive.google.com/file/d/1NrWAPDCwGvzhtjTz2acgSd9F2PoCyvf5/view?usp=drive_link"
             target="_blank"
             className="flex items-center gap-2 px-4 py-2 bg-neutral-900 text-white dark:bg-white dark:text-black rounded-full text-sm font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors"
           >
