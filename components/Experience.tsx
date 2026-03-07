@@ -37,41 +37,53 @@ const experiences: ExperienceItem[] = [
 
 export default function Experience() {
   return (
-    <section className="py-8 max-w-2xl mx-auto px-6">
+    <section className="py-2">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: 0.25 }}
       >
-        <h3 className="text-xl font-semibold mb-6">Experience</h3>
-        <div className="relative border-l border-neutral-200 dark:border-neutral-800 ml-3 space-y-10">
+        <h3 className="text-xl font-semibold mb-6 flex items-center gap-2 text-foreground">
+          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-blue-500">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75 bg-blue-500"></span>
+          </span>
+          Experience
+        </h3>
+        <div className="relative border-l border-border ml-3 space-y-10">
           {experiences.map((exp, index) => (
             <div key={index} className="ml-6 relative">
-              <div className="absolute -left-[31px] top-1.5 w-3 h-3 bg-neutral-200 dark:bg-neutral-800 rounded-full border-2 border-white dark:border-black" />
+              <div className="absolute -left-[31px] top-1.5 w-3 h-3 bg-blue-500 rounded-full border-2 border-background" />
               <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-2">
-                <h4 className="font-medium text-lg text-neutral-900 dark:text-neutral-100">
+                <h4 className="font-medium text-lg text-foreground">
                   {exp.link ? (
                     <Link
                       href={exp.link}
                       target="_blank"
-                      className="inline-flex items-center gap-1 hover:underline"
+                      className="inline-flex items-center gap-1 hover:underline text-foreground"
                     >
                       {exp.company}
-                      <ExternalLink size={14} className="inline" />
+                      <ExternalLink
+                        size={14}
+                        className="inline text-muted-foreground"
+                      />
                     </Link>
                   ) : (
                     exp.company
                   )}
                 </h4>
-                <span className="text-sm text-neutral-500">{exp.period}</span>
+                <span className="text-sm text-muted-foreground mt-1 sm:mt-0">
+                  {exp.period}
+                </span>
               </div>
-              <p className="text-neutral-600 dark:text-neutral-400 mb-3">
+              <p className="text-sm text-foreground mb-3 font-medium">
                 {exp.role}
               </p>
-              <ul className="list-disc list-outside ml-4 space-y-1 text-sm text-neutral-600 dark:text-neutral-400">
+              <ul className="list-disc list-outside ml-4 space-y-1.5 text-sm text-muted-foreground">
                 {exp.description.map((desc, i) => (
-                  <li key={i}>{desc}</li>
+                  <li key={i} className="leading-relaxed">
+                    {desc}
+                  </li>
                 ))}
               </ul>
             </div>

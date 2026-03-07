@@ -7,20 +7,19 @@ import Activity from "@/components/GitHubCalendar";
 
 export default function Home() {
   return (
-    <>
-      <main className="min-h-screen bg-black text-white transition-colors duration-300">
-        <div
-          className="mx-auto bg-black border-x border-neutral-800 min-h-screen"
-          style={{ maxWidth: "52.8rem" }}
-        >
+    <main className="min-h-screen transition-colors duration-300">
+      <div className="mx-auto min-h-screen max-w-5xl px-6 py-12 md:py-20 flex flex-col md:flex-row gap-12">
+        <div className="shrink-0 md:sticky md:top-20 md:w-60 md:self-start">
           <Hero />
+        </div>
+        <div className="flex-1 space-y-12">
           <Skills />
           <Experience />
           <Projects />
           <Blogs />
           <Activity />
         </div>
-      </main>
-    </>
+      </div>
+    </main>
   );
 }

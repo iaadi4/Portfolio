@@ -9,6 +9,7 @@ const skillCategories = [
       {
         name: "Rust",
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rust/rust-original.svg",
+        darkInvert: true,
       },
       {
         name: "C++",
@@ -42,14 +43,17 @@ const skillCategories = [
       {
         name: "Next.js",
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg",
+        darkInvert: true,
       },
       {
         name: "Express.js",
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg",
+        darkInvert: true,
       },
       {
         name: "Axum",
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rust/rust-original.svg",
+        darkInvert: true,
       },
       {
         name: "TailwindCSS",
@@ -67,6 +71,7 @@ const skillCategories = [
       {
         name: "AWS",
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg",
+        darkInvert: true,
       },
       {
         name: "Docker",
@@ -108,6 +113,7 @@ const skillCategories = [
       {
         name: "Solana",
         logo: "https://cryptologos.cc/logos/solana-sol-logo.svg",
+        darkInvert: true,
       },
       {
         name: "Web3.js",
@@ -116,10 +122,12 @@ const skillCategories = [
       {
         name: "Anchor",
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rust/rust-original.svg",
+        darkInvert: true,
       },
       {
         name: "Smart Contracts",
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/solidity/solidity-original.svg",
+        darkInvert: true,
       },
     ],
   },
@@ -127,31 +135,39 @@ const skillCategories = [
 
 export default function Skills() {
   return (
-    <section className="py-8 max-w-2xl mx-auto px-6">
+    <section className="py-2">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <h3 className="text-xl font-semibold mb-6">Skills</h3>
+        <h3 className="text-xl font-semibold mb-6 flex items-center gap-2 text-foreground">
+          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75 bg-emerald-500"></span>
+          </span>
+          Skills
+        </h3>
         <div className="space-y-6">
           {skillCategories.map((category, idx) => (
             <div key={idx}>
-              <h4 className="text-sm font-medium text-neutral-400 mb-3">
+              <h4 className="text-sm font-medium text-muted-foreground mb-3">
                 {category.title}
               </h4>
               <div className="flex flex-wrap gap-2">
                 {category.skills.map((skill, index) => (
                   <span
                     key={index}
-                    className="flex items-center gap-2 px-3 py-1 bg-neutral-900 rounded-md text-sm text-neutral-200"
+                    className="flex items-center gap-2 px-3 py-1.5 bg-card border border-border rounded-md text-sm text-muted-foreground hover:border-muted hover:bg-muted/50 transition-colors"
                   >
                     <img
                       src={skill.logo}
                       alt={skill.name}
-                      className="w-4 h-4 brightness-0 invert"
-                      style={{ filter: "brightness(0) invert(1)" }}
+                      className={`w-4 h-4 ${
+                        (skill as any).darkInvert
+                          ? "dark:brightness-0 dark:invert"
+                          : ""
+                      }`}
                     />
                     {skill.name}
                   </span>
