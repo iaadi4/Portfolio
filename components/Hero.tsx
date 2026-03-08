@@ -22,6 +22,11 @@ export default function Hero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
+        <img
+          src="https://avatars.githubusercontent.com/iaadi4"
+          alt="Aditya Singh"
+          className="w-24 h-24 rounded-full border border-border shadow-sm object-cover mb-4"
+        />
         <h1 className="text-3xl font-bold tracking-tight mb-2 text-foreground">
           Aditya Singh
         </h1>
@@ -48,70 +53,40 @@ export default function Hero() {
         </p>
 
         <div className="flex flex-col gap-4 items-start mt-6">
-          <div className="flex gap-4 items-center">
-            <Link
-              href="https://github.com/iaadi4"
-              target="_blank"
-              className="text-gray-800 dark:text-gray-200 hover:text-black dark:hover:text-white transition-colors"
-              aria-label="GitHub"
-            >
-              <Github size={20} />
-            </Link>
-            <Link
-              href="https://www.linkedin.com/in/adityasingh40675/"
-              target="_blank"
-              className="text-[#0A66C2] hover:opacity-80 transition-opacity"
-              aria-label="LinkedIn"
-            >
-              <Linkedin size={20} />
-            </Link>
-            <Link
-              href="https://x.com/iaadi8"
-              target="_blank"
-              className="text-black dark:text-white hover:opacity-70 transition-opacity"
-              aria-label="Twitter"
-            >
-              <Twitter size={20} />
-            </Link>
-            <Link
-              href="https://leetcode.com/u/iaadi4/"
-              target="_blank"
-              className="text-[#f89a00] hover:opacity-80 transition-opacity"
-              aria-label="LeetCode"
-            >
-              <LeetCodeIcon size={20} />
-            </Link>
-            <Link
-              href="https://www.codechef.com/users/iaadi7"
-              target="_blank"
-              className="text-[#a1a839] hover:opacity-80 transition-opacity"
-              aria-label="CodeChef"
-            >
-              <CodeChefIcon size={20} />
-            </Link>
-            <Link
-              href="https://codeforces.com/profile/chineseremaindertheoram"
-              target="_blank"
-              className="text-[#1f8acb] hover:opacity-80 transition-opacity"
-              aria-label="Codeforces"
-            >
-              <CodeforcesIcon size={20} />
-            </Link>
-            <Link
-              href="mailto:adityasingh40675@gmail.com"
-              className="text-[#D44638] hover:opacity-80 transition-opacity"
-              aria-label="Email"
-            >
-              <Mail size={20} />
-            </Link>
+          <div className="flex gap-4 items-center pl-1">
+            {[
+              { href: "https://github.com/iaadi4", label: "GitHub", Icon: Github, color: "text-[#181717] dark:text-[#F0F6FC]", target: "_blank" },
+              { href: "https://www.linkedin.com/in/adityasingh40675/", label: "LinkedIn", Icon: Linkedin, color: "text-[#0A66C2]", target: "_blank" },
+              { href: "https://x.com/iaadi8", label: "X (Twitter)", Icon: Twitter, color: "text-[#000000] dark:text-[#E7E9EA]", target: "_blank" },
+              { href: "https://leetcode.com/u/iaadi4/", label: "LeetCode", Icon: LeetCodeIcon, color: "text-[#FFA116]", target: "_blank" },
+              { href: "https://www.codechef.com/users/iaadi7", label: "CodeChef", Icon: CodeChefIcon, color: "text-[#5B4638] dark:text-[#EAE6DF]", target: "_blank" },
+              { href: "https://codeforces.com/profile/chineseremaindertheoram", label: "Codeforces", Icon: CodeforcesIcon, color: "text-[#1F8ACB]", target: "_blank" },
+              { href: "mailto:adityasingh40675@gmail.com", label: "Email", Icon: Mail, color: "text-[#ea4335]", target: "_self" },
+            ].map((link) => (
+              <div key={link.label} className="relative group">
+                <Link
+                  href={link.href}
+                  target={link.target}
+                  className={`${link.color} hover:opacity-80 transition-opacity p-1 -m-1 inline-flex`}
+                  aria-label={link.label}
+                >
+                  <link.Icon size={20} />
+                </Link>
+                <span className="absolute -top-10 left-1/2 -translate-x-1/2 scale-0 opacity-0 rounded bg-popover px-2 py-1 text-xs font-medium text-popover-foreground shadow border border-border transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 dark:shadow-none z-10 whitespace-nowrap pointer-events-none origin-bottom">
+                  {link.label}
+                </span>
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-border scale-0 opacity-0 transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 z-10 pointer-events-none origin-top"></span>
+                <span className="absolute -top-4 left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-popover scale-0 opacity-0 transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 z-10 pointer-events-none origin-top mt-[1px]"></span>
+              </div>
+            ))}
           </div>
           <Link
             href="https://drive.google.com/file/d/1NrWAPDCwGvzhtjTz2acgSd9F2PoCyvf5/view?usp=drive_link"
             target="_blank"
-            className="flex items-center gap-2 px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-medium transition-colors"
+            className="flex items-center gap-2 px-4 py-1.5 bg-gray-200 hover:bg-blue-700 text-white rounded-full text-sm font-medium transition-colors mt-2"
           >
-            <FileText size={16} />
-            <span>Resume</span>
+            <FileText className="text-black" size={16} />
+            <span className="text-black">Resume</span>
           </Link>
         </div>
       </motion.div>

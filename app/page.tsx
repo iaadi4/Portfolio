@@ -12,7 +12,7 @@ export default function Home() {
         <div className="shrink-0 md:sticky md:top-20 md:w-60 md:self-start">
           <Hero />
         </div>
-        <div className="flex-1 space-y-12">
+        <div className="flex-1 min-w-0 space-y-12">
           <Skills />
           <Experience />
           <Projects />

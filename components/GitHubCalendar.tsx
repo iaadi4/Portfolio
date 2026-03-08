@@ -72,12 +72,12 @@ export default function Activity() {
             contributions in the last year
           </span>
         </div>
-        <div ref={scrollRef} className="overflow-x-auto py-4 scroll-smooth">
-          <div className="flex justify-start min-w-max">
+        <div ref={scrollRef} className="w-full overflow-x-auto py-4 scroll-smooth">
+          <div className="w-max mx-auto">
             <ActivityCalendar
               data={data}
               theme={{
-                light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
+                light: ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"],
                 dark: ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"],
               }}
               colorScheme={theme === "dark" ? "dark" : "light"}
@@ -99,22 +99,6 @@ export default function Activity() {
               )}
             />
           </div>
-        </div>
-        <div className="flex items-center gap-2 mt-2 justify-end text-xs text-muted-foreground">
-          <span>Less</span>
-          <div className="flex gap-0.5">
-            {(theme === "dark"
-              ? ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"]
-              : ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"]
-            ).map((color, i) => (
-              <div
-                key={i}
-                className="w-3 h-3 rounded-sm"
-                style={{ backgroundColor: color }}
-              />
-            ))}
-          </div>
-          <span>More</span>
         </div>
       </motion.div>
     </section>
