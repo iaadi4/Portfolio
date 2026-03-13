@@ -1,104 +1,122 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { ActivityCalendar } from "react-activity-calendar";
 import { useTheme } from "next-themes";
-import { useEffect, useState, useRef } from "react";
+import { SectionHeader } from "./Skills";
 
 export default function Activity() {
-  const { theme } = useTheme();
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [totalContributions, setTotalContributions] = useState(0);
+  const { resolvedTheme }   = useTheme();
+  const [data,    setData]  = useState<any[] | null>(null);
+  const [total,   setTotal] = useState(0);
+  const [loading, setLoad]  = useState(true);
+  const [error,   setError] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch("https://github-contributions-api.jogruber.de/v4/iaadi4?y=last")
-      .then((res) => res.json())
-      .then((json) => {
-        setData(json.contributions);
-        const total = json.contributions.reduce(
-          (sum: number, day: any) => sum + day.count,
-          0,
-        );
-        setTotalContributions(total);
-        setLoading(false);
+      .then(r => r.json())
+      .then(json => {
+        const c = json.contributions ?? [];
+        setData(c);
+        setTotal(c.reduce((s: number, d: any) => s + d.count, 0));
+        setLoad(false);
       })
-      .catch((err) => {
-        console.error("Error fetching github data", err);
-        setLoading(false);
-      });
+      .catch(() => { setError(true); setLoad(false); });
   }, []);
 
-  // Auto-scroll to latest contributions (rightmost)
+  // Scroll to the most recent (rightmost) contributions
   useEffect(() => {
     if (scrollRef.current && data) {
       setTimeout(() => {
-        if (scrollRef.current) {
+        if (scrollRef.current)
           scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
-        }
-      }, 100);
+      }, 200);
     }
   }, [data]);
 
-  if (loading) {
-    return (
-      <section className="py-2 mb-20">
-        <div className="animate-pulse h-40 bg-muted/50 rounded-lg"></div>
-      </section>
-    );
-  }
-
-  if (!data) return null;
-
   return (
-    <section className="py-2 pb-16">
+    <section className="py-1 pb-16">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 18 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.4 }}
+        transition={{ duration: 0.45 }}
       >
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-semibold flex items-center gap-2 text-foreground">
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-green-500"></span>
+        {/* Header row with contribution count on the right */}
+        <div className="flex items-center gap-3 mb-6">
+          <span className="relative flex h-2 w-2 flex-shrink-0">
+            <span className="absolute inline-flex h-full w-full rounded-full opacity-60 animate-ping" style={{ background: "#4ade80" }} />
+            <span className="relative h-2 w-2 rounded-full" style={{ background: "#4ade80", boxShadow: "0 0 6px #4ade8080" }} />
+          </span>
+          <h3 className="text-base font-bold text-foreground" style={{ fontFamily: "'Syne', sans-serif" }}>
             Contributions
           </h3>
-          <span className="text-sm text-muted-foreground">
-            <span className="font-semibold text-green-500">
-              {totalContributions.toLocaleString()}
-            </span>{" "}
-            contributions in the last year
-          </span>
+          <div className="flex-1 h-px bg-border" />
+          {!loading && !error && total > 0 && (
+            <span className="text-[11px] text-muted-foreground" style={{ fontFamily: "monospace" }}>
+              <span className="font-semibold" style={{ color: "#4ade80" }}>{total.toLocaleString()}</span>
+              {" "}in the last year
+            </span>
+          )}
         </div>
-        <div ref={scrollRef} className="w-full overflow-x-auto py-4 scroll-smooth">
-          <div className="w-max mx-auto">
-            <ActivityCalendar
-              data={data}
-              theme={{
-                light: ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"],
-                dark: ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"],
-              }}
-              colorScheme={theme === "dark" ? "dark" : "light"}
-              blockSize={12}
-              blockRadius={2}
-              blockMargin={4}
-              fontSize={12}
-              showWeekdayLabels={true}
-              renderBlock={(block, activity) => (
-                <g>
-                  {React.cloneElement(block, {
-                    children: (
-                      <title>
-                        {`${activity.count} contribution${activity.count !== 1 ? "s" : ""} on ${new Date(activity.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`}
-                      </title>
-                    ),
-                  })}
-                </g>
-              )}
+
+        {/* Calendar area — no terminal chrome, just the calendar */}
+        <div
+          className="border border-border p-4 overflow-hidden"
+          style={{ background: "hsl(var(--card))" }}
+        >
+          {loading && (
+            <div
+              className="animate-pulse rounded"
+              style={{ height: 112, background: "hsl(var(--muted))" }}
             />
-          </div>
+          )}
+
+          {error && (
+            <div
+              className="flex items-center justify-center text-[12px] text-muted-foreground"
+              style={{ height: 112, fontFamily: "monospace" }}
+            >
+              Could not load contribution data.
+            </div>
+          )}
+
+          {data && (
+            <div
+              ref={scrollRef}
+              className="overflow-x-auto"
+              style={{ scrollbarWidth: "thin" }}
+            >
+              <div className="w-max">
+                <ActivityCalendar
+                  data={data}
+                  theme={{
+                    light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
+                    dark:  ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"],
+                  }}
+                  colorScheme={resolvedTheme === "dark" ? "dark" : "light"}
+                  blockSize={11}
+                  blockRadius={2}
+                  blockMargin={3}
+                  fontSize={11}
+                  showWeekdayLabels
+                  renderBlock={(block, activity) =>
+                    React.cloneElement(block, {
+                      children: (
+                        <title>
+                          {activity.count === 0
+                            ? `No contributions on ${activity.date}`
+                            : `${activity.count} contribution${activity.count !== 1 ? "s" : ""} on ${new Date(activity.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`}
+                        </title>
+                      ),
+                    })
+                  }
+                />
+              </div>
+            </div>
+          )}
         </div>
       </motion.div>
     </section>
