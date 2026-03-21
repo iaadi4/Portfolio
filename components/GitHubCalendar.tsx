@@ -4,11 +4,16 @@ import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { ActivityCalendar } from "react-activity-calendar";
 import { useTheme } from "next-themes";
-import { SectionHeader } from "./Skills";
+
+interface Contribution {
+  date: string;
+  count: number;
+  level: number;
+}
 
 export default function Activity() {
   const { resolvedTheme }   = useTheme();
-  const [data,    setData]  = useState<any[] | null>(null);
+  const [data,    setData]  = useState<Contribution[] | null>(null);
   const [total,   setTotal] = useState(0);
   const [loading, setLoad]  = useState(true);
   const [error,   setError] = useState(false);
@@ -20,7 +25,7 @@ export default function Activity() {
       .then(json => {
         const c = json.contributions ?? [];
         setData(c);
-        setTotal(c.reduce((s: number, d: any) => s + d.count, 0));
+        setTotal(c.reduce((s: number, d: Contribution) => s + d.count, 0));
         setLoad(false);
       })
       .catch(() => { setError(true); setLoad(false); });

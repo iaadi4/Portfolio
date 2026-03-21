@@ -41,10 +41,7 @@ export default function Experience() {
       >
         <SectionHeader dot="#4ade80" title="Experience" right="WORK_LOG.json" />
 
-        <div className="relative pl-5">
-          {/* Vertical line */}
-          <div className="timeline-line absolute left-0 top-2 bottom-2 w-px" />
-
+        <div className="relative">
           {experiences.map((exp, i) => (
             <motion.div
               key={i}
@@ -54,12 +51,6 @@ export default function Experience() {
               transition={{ duration:0.35, delay:i*0.12 }}
               className="relative mb-6 last:mb-0"
             >
-              {/* Dot — green to match theme */}
-              <div
-                className="absolute -left-[21px] top-4 w-2.5 h-2.5 rounded-full border-2 border-card"
-                style={{ background:"#4ade80", boxShadow:"0 0 7px rgba(74,222,128,0.55)" }}
-              />
-
               {/* Card */}
               <div
                 className="border border-border p-4 transition-colors"

@@ -4,11 +4,10 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Github, Linkedin, Twitter, FileText, Mail } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import LeetCodeIcon     from "./icons/LeetCodeIcon";
 import CodeChefIcon     from "./icons/CodeChefIcon";
 import CodeforcesIcon   from "./icons/CodeforcesIcon";
-import PixelJungleBanner from "./PixelJungleBanner";
-
 const TYPING_STRINGS = [
   "Full Stack Developer",
   "Rust Enthusiast",
@@ -36,8 +35,10 @@ function TypewriterText() {
       if (charIdx > 0) {
         t = setTimeout(() => { setDisp(cur.slice(0, charIdx - 1)); setChar(c => c - 1); }, 32);
       } else {
-        setDel(false);
-        setIdx(i => (i + 1) % TYPING_STRINGS.length);
+        t = setTimeout(() => {
+          setDel(false);
+          setIdx(i => (i + 1) % TYPING_STRINGS.length);
+        }, 32);
       }
     }
     return () => clearTimeout(t);
@@ -64,9 +65,6 @@ const SOCIALS = [
 export default function Hero() {
   return (
     <section className="pb-8">
-      {/* Pixel jungle banner */}
-      <PixelJungleBanner />
-
       <motion.div
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
@@ -76,9 +74,11 @@ export default function Hero() {
         {/* Avatar + name row */}
         <div className="flex items-center gap-3 mb-4">
           <div className="relative flex-shrink-0">
-            <img
+            <Image
               src="https://avatars.githubusercontent.com/iaadi4"
               alt="Aditya Singh"
+              width={64}
+              height={64}
               className="w-16 h-16 block object-cover"
               style={{ border: "1px solid hsl(var(--border))" }}
             />
@@ -177,7 +177,7 @@ export default function Hero() {
 
         {/* Resume button */}
         <Link
-          href="https://drive.google.com/file/d/1NrWAPDCwGvzhtjTz2acgSd9F2PoCyvf5/view?usp=drive_link"
+          href="https://drive.google.com/file/d/11i5VdNwoAH3aCR4YobdH1kvjh3x9lDIP/view?usp=drive_link"
           target="_blank"
           className="group flex items-center gap-2 w-full px-4 py-2.5 border border-border text-foreground text-[12px] font-semibold tracking-widest uppercase transition-all hover:border-primary hover:text-primary hover:bg-primary/8"
           style={{ fontFamily: "'IBM Plex Mono', monospace" }}

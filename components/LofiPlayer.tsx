@@ -5,9 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Play, Pause, Volume2, VolumeX, SkipForward, ChevronUp } from "lucide-react";
 
 const TRACKS = [
-  { title: "Jungle Lofi",  bpm: "78 BPM", url: "https://stream.zeno.fm/f3wvbbqmdg8uv" },
-  { title: "Night Garden", bpm: "75 BPM", url: "https://stream.zeno.fm/0r0xa792kwzuv" },
-  { title: "Moss & Code",  bpm: "82 BPM", url: "https://stream.zeno.fm/oxzf81v9fn8uv" },
+  { title: "Jungle Lofi",  bpm: "78 BPM", url: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Tours/Enthusiast/Tours_-_01_-_Enthusiast.mp3" },
+  { title: "Night Garden", bpm: "75 BPM", url: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Broke_For_Free/Directionless_EP/Broke_For_Free_-_01_-_Night_Owl.mp3" },
+  { title: "Moss & Code",  bpm: "82 BPM", url: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Chad_Crouch/Arps/Chad_Crouch_-_Algorithms.mp3" },
 ];
 
 export default function LofiPlayer() {
@@ -24,9 +24,10 @@ export default function LofiPlayer() {
   // Pre-create audio element on mount so it's ready immediately
   useEffect(() => {
     const a = new Audio();
-    a.preload = "none";
+    a.preload = "auto";
     a.volume = volume;
     a.loop   = true;
+    a.src    = TRACKS[0].url; // Pre-warm the initially selected track immediately
     audioRef.current = a;
     return () => { a.pause(); a.src = ""; };
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -67,11 +68,17 @@ export default function LofiPlayer() {
       a.pause();
       setPlaying(false);
     } else {
+      // First play: if src is missing or effectively empty
       if (!a.src || a.src === window.location.href) {
-        // First play — set src and play
         await loadAndPlay(trackIdx);
       } else {
-        try { await a.play(); setPlaying(true); } catch {}
+        try { 
+          await a.play(); 
+          setPlaying(true); 
+        } catch (err) {
+          console.error("Play error, trying reload:", err);
+          await loadAndPlay(trackIdx);
+        }
       }
     }
   }, [playing, trackIdx, loadAndPlay]);
@@ -80,13 +87,17 @@ export default function LofiPlayer() {
     const a = audioRef.current;
     if (!a) return;
     a.pause();
-    a.src = "";
     setPlaying(false);
+    
     const next = (trackIdx + 1) % TRACKS.length;
     setTrackIdx(next);
+    
     // If was playing, auto-play next track
     if (playing) {
       setTimeout(() => loadAndPlay(next), 50);
+    } else {
+      // Pre-warm the next track if not playing
+      a.src = TRACKS[next].url;
     }
   }, [trackIdx, playing, loadAndPlay]);
 
@@ -94,7 +105,6 @@ export default function LofiPlayer() {
     const a = audioRef.current;
     if (!a) return;
     a.pause();
-    a.src = "";
     setPlaying(false);
     setTrackIdx(i);
     setTimeout(() => loadAndPlay(i), 50);

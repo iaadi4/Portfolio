@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 // ── Shared section header ─────────────────────────────────────────────
 export function SectionHeader({
@@ -49,7 +50,20 @@ export function SectionHeader({
 
 // ── Skill data ────────────────────────────────────────────────────────
 // Note: Next.js uses the wordmark SVG (white-friendly), Solana uses correct logo
-const skillCategories = [
+type Skill = {
+  name: string;
+  logo: string;
+  darkInvert?: boolean;
+};
+
+type SkillCategory = {
+  title: string;
+  accent: string;
+  emoji: string;
+  skills: Skill[];
+};
+
+const skillCategories: SkillCategory[] = [
   {
     title: "Languages",
     accent: "#60a5fa",
@@ -192,11 +206,13 @@ export default function Skills() {
                       transition: "all 0.15s",
                     }}
                   >
-                    <img
+                    <Image
                       src={skill.logo}
                       alt={skill.name}
+                      width={14}
+                      height={14}
                       className={`w-3.5 h-3.5 object-contain ${
-                        (skill as any).darkInvert ? "dark:brightness-0 dark:invert" : ""
+                        skill.darkInvert ? "dark:brightness-0 dark:invert" : ""
                       }`}
                     />
                     {skill.name}
