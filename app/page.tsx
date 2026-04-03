@@ -12,9 +12,9 @@ export default function Home() {
     <>
       <Navbar />
       
-      <main className="min-h-screen bg-black text-white w-full overflow-hidden flex flex-col">
+      <main className="min-h-[100svh] bg-black text-white w-full overflow-hidden flex flex-col">
         {/* Massive Hero Section */}
-        <section className="relative w-full min-h-screen flex flex-col justify-center items-center pb-20">
+        <section className="relative w-full min-h-[100svh] flex flex-col justify-center items-center pb-20">
           <Hero />
         </section>
 
