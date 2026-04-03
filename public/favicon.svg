@@ -1,12 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
-  <rect x="0" y="0" width="120" height="120" rx="24" fill="#ffffff"/>
+  <rect x="0" y="0" width="120" height="120" rx="28" fill="#0a0a0a"/>
   <text 
     x="60" 
-    y="80" 
-    font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" 
-    font-size="56" 
-    font-weight="700" 
-    fill="#000000" 
+    y="84" 
+    font-family="system-ui, -apple-system, 'Inter', 'Segoe UI', sans-serif" 
+    font-size="78" 
+    font-weight="800" 
     text-anchor="middle"
-  >As</text>
+  >
+    <tspan fill="#ffffff">a</tspan><tspan fill="#f97316">.</tspan>
+  </text>
 </svg>

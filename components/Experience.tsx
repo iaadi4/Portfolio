@@ -1,9 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { SectionHeader } from "./Skills";
 
 const experiences = [
   {
@@ -32,93 +31,71 @@ const experiences = [
 
 export default function Experience() {
   return (
-    <section className="py-1">
+    <section className="w-full">
       <motion.div
-        initial={{ opacity:0, y:18 }}
-        whileInView={{ opacity:1, y:0 }}
-        viewport={{ once:true }}
-        transition={{ duration:0.45 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
       >
-        <SectionHeader dot="#4ade80" title="Experience" right="WORK_LOG.json" />
+        <div className="flex items-center gap-4 mb-16">
+          <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter">
+            Career <span className="text-primary">Journey.</span>
+          </h2>
+        </div>
 
-        <div className="relative">
+        <div className="flex flex-col relative before:absolute before:inset-0 before:top-2 before:bottom-2 before:left-[11px] before:w-px before:bg-white/10 ml-2">
           {experiences.map((exp, i) => (
             <motion.div
               key={i}
-              initial={{ opacity:0, x:-14 }}
-              whileInView={{ opacity:1, x:0 }}
-              viewport={{ once:true }}
-              transition={{ duration:0.35, delay:i*0.12 }}
-              className="relative mb-6 last:mb-0"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.15 }}
+              className="relative pl-10 mb-16 last:mb-0 group"
             >
-              {/* Card */}
-              <div
-                className="border border-border p-4 transition-colors"
-                style={{
-                  background:"hsl(var(--card))",
-                  borderLeft:"3px solid hsl(var(--border))",
-                  transition:"border-color 0.2s, box-shadow 0.2s",
-                }}
-                onMouseEnter={e=>{
-                  (e.currentTarget as HTMLElement).style.borderLeftColor="#4ade80";
-                  (e.currentTarget as HTMLElement).style.boxShadow="4px 4px 0px rgba(74,222,128,0.25)";
-                }}
-                onMouseLeave={e=>{
-                  (e.currentTarget as HTMLElement).style.borderLeftColor="hsl(var(--border))";
-                  (e.currentTarget as HTMLElement).style.boxShadow="none";
-                }}
-              >
-                {/* Company + period */}
-                <div className="flex flex-wrap items-start justify-between gap-2 mb-1">
-                  <h4 className="font-bold text-[15px] text-foreground" style={{ fontFamily:"'Syne',sans-serif" }}>
-                    {exp.link ? (
-                      <Link href={exp.link} target="_blank" className="inline-flex items-center gap-1.5 hover:text-primary transition-colors">
-                        {exp.company}
-                        <ExternalLink size={13} className="text-muted-foreground" />
-                      </Link>
-                    ) : exp.company}
-                  </h4>
-                  <span
-                    className="text-[11px] text-muted-foreground border border-border px-2 py-0.5 flex-shrink-0"
-                    style={{ fontFamily:"monospace" }}
-                  >
-                    {exp.period}
-                  </span>
-                </div>
-
-                {/* Role */}
-                <p className="text-[12px] text-primary font-semibold mb-3" style={{ fontFamily:"monospace" }}>
-                  ↳ {exp.role}
-                </p>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-1.5 mb-3">
-                  {exp.tags.map((tag, ti) => (
-                    <span
-                      key={ti}
-                      className="text-[10px] px-2 py-0.5 font-medium"
-                      style={{
-                        fontFamily:"monospace",
-                        background:"hsl(var(--primary) / 0.1)",
-                        color:"hsl(var(--primary))",
-                        border:"1px solid hsl(var(--primary) / 0.25)",
-                      }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Bullets */}
-                <ul className="space-y-1.5">
-                  {exp.description.map((d, di) => (
-                    <li key={di} className="flex gap-2 text-[12px] text-muted-foreground leading-relaxed" style={{ fontFamily:"'IBM Plex Mono',monospace" }}>
-                      <span className="text-primary flex-shrink-0 mt-0.5 font-bold">›</span>
-                      {d}
-                    </li>
-                  ))}
-                </ul>
+              {/* Timeline marker */}
+              <div className="absolute left-[7px] top-[7px] w-[9px] h-[9px] rounded-full bg-white group-hover:bg-primary group-hover:scale-150 transition-all duration-300 shadow-[0_0_10px_rgba(255,255,255,0.4)] group-hover:shadow-[0_0_15px_var(--color-primary)]" />
+              
+              <div className="flex flex-col md:flex-row md:items-baseline md:justify-between mb-2">
+                <h3 className="text-2xl font-bold text-white group-hover:text-primary transition-colors flex items-center gap-2">
+                  {exp.link ? (
+                    <Link href={exp.link} target="_blank" className="flex items-center gap-2 hover:underline decoration-primary underline-offset-4">
+                      {exp.company}
+                      <ExternalLink size={16} className="text-gray-500 hover:text-white" />
+                    </Link>
+                  ) : (
+                    exp.company
+                  )}
+                </h3>
+                <span className="text-sm font-light text-gray-500 uppercase tracking-widest mt-1 md:mt-0">
+                  {exp.period}
+                </span>
               </div>
+              
+              <p className="text-lg text-gray-300 font-medium mb-4">
+                {exp.role}
+              </p>
+              
+              <div className="flex flex-wrap gap-2 mb-6">
+                {exp.tags.map((tag, ti) => (
+                  <span
+                    key={ti}
+                    className="text-[10px] uppercase tracking-widest font-semibold text-gray-400 px-3 py-1 border border-white/10 rounded-full bg-white/5"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              <ul className="space-y-3">
+                {exp.description.map((desc, di) => (
+                  <li key={di} className="flex gap-4 text-sm text-gray-400 leading-relaxed font-light">
+                    <ArrowRight size={16} className="text-primary flex-shrink-0 mt-0.5 opacity-50 group-hover:opacity-100 transition-opacity" />
+                    {desc}
+                  </li>
+                ))}
+              </ul>
             </motion.div>
           ))}
         </div>

@@ -1,21 +1,23 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
+import { Outfit } from "next/font/google";
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+});
 
 export const metadata: Metadata = {
   title: "Aditya Singh | Full Stack Developer",
-  description: "Portfolio of Aditya Singh — Full Stack, DevOps & Web3 Developer.",
+  description: "Portfolio of Aditya Singh — Brand. Design. Product. In-House Development. &More",
   icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      </head>
-      <body>
+      <body className={`${outfit.variable} font-sans antialiased bg-black text-white`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           {children}
         </ThemeProvider>

@@ -3,7 +3,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { ActivityCalendar } from "react-activity-calendar";
-import { useTheme } from "next-themes";
 
 interface Contribution {
   date: string;
@@ -12,11 +11,10 @@ interface Contribution {
 }
 
 export default function Activity() {
-  const { resolvedTheme }   = useTheme();
-  const [data,    setData]  = useState<Contribution[] | null>(null);
-  const [total,   setTotal] = useState(0);
+  const [data, setData] = useState<Contribution[] | null>(null);
+  const [total, setTotal] = useState(0);
   const [loading, setLoad]  = useState(true);
-  const [error,   setError] = useState(false);
+  const [error, setError] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -31,7 +29,6 @@ export default function Activity() {
       .catch(() => { setError(true); setLoad(false); });
   }, []);
 
-  // Scroll to the most recent (rightmost) contributions
   useEffect(() => {
     if (scrollRef.current && data) {
       setTimeout(() => {
@@ -42,70 +39,49 @@ export default function Activity() {
   }, [data]);
 
   return (
-    <section className="py-1 pb-16">
+    <section className="w-full">
       <motion.div
-        initial={{ opacity: 0, y: 18 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.45 }}
+        transition={{ duration: 0.8 }}
       >
-        {/* Header row with contribution count on the right */}
-        <div className="flex items-center gap-3 mb-6">
-          <span className="relative flex h-2 w-2 flex-shrink-0">
-            <span className="absolute inline-flex h-full w-full rounded-full opacity-60 animate-ping" style={{ background: "#4ade80" }} />
-            <span className="relative h-2 w-2 rounded-full" style={{ background: "#4ade80", boxShadow: "0 0 6px #4ade8080" }} />
-          </span>
-          <h3 className="text-base font-bold text-foreground" style={{ fontFamily: "'Syne', sans-serif" }}>
-            Contributions
-          </h3>
-          <div className="flex-1 h-px bg-border" />
+        <div className="flex items-center justify-between mb-12">
+          <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter">
+            Proof of <span className="text-primary">Work.</span>
+          </h2>
           {!loading && !error && total > 0 && (
-            <span className="text-[11px] text-muted-foreground" style={{ fontFamily: "monospace" }}>
-              <span className="font-semibold" style={{ color: "#4ade80" }}>{total.toLocaleString()}</span>
-              {" "}in the last year
-            </span>
+            <div className="hidden md:flex text-gray-500 uppercase tracking-widest text-sm font-semibold">
+              <span className="text-white mr-1">{total.toLocaleString()}</span> Contributions
+            </div>
           )}
         </div>
 
-        {/* Calendar area — no terminal chrome, just the calendar */}
-        <div
-          className="border border-border p-4 overflow-hidden"
-          style={{ background: "hsl(var(--card))" }}
-        >
+        <div className="p-8 border border-white/10 rounded-md bg-[#0a0a0a] overflow-hidden flex flex-col items-center justify-center w-full">
           {loading && (
-            <div
-              className="animate-pulse rounded"
-              style={{ height: 112, background: "hsl(var(--muted))" }}
-            />
+            <div className="animate-pulse rounded bg-white/5 h-32 w-full max-w-4xl" />
           )}
 
           {error && (
-            <div
-              className="flex items-center justify-center text-[12px] text-muted-foreground"
-              style={{ height: 112, fontFamily: "monospace" }}
-            >
+            <div className="flex items-center justify-center text-sm text-gray-500 h-32 uppercase tracking-widest">
               Could not load contribution data.
             </div>
           )}
 
           {data && (
-            <div
-              ref={scrollRef}
-              className="overflow-x-auto"
-              style={{ scrollbarWidth: "thin" }}
-            >
-              <div className="w-max">
+            <div className="w-full max-w-full overflow-x-auto hide-scrollbar flex justify-center py-2" ref={scrollRef}>
+              <div className="min-w-max">
                 <ActivityCalendar
                   data={data}
                   theme={{
-                    light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
-                    dark:  ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"],
+                    light: ["#161b22", "#fb923c", "#f97316", "#ea580c", "#c2410c"],
+                    dark:  ["#111", "#f9731655", "#f9731699", "#f97316cc", "#f97316"],
                   }}
-                  colorScheme={resolvedTheme === "dark" ? "dark" : "light"}
-                  blockSize={11}
-                  blockRadius={2}
-                  blockMargin={3}
-                  fontSize={11}
+                  colorScheme="dark"
+                  blockSize={14}
+                  blockRadius={3}
+                  blockMargin={4}
+                  fontSize={12}
                   showWeekdayLabels
                   renderBlock={(block, activity) =>
                     React.cloneElement(block, {

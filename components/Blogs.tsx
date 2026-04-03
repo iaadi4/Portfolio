@@ -1,9 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BookOpen, ExternalLink } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { SectionHeader } from "./Skills";
 
 const blogs = [
   {
@@ -18,73 +17,71 @@ const blogs = [
 
 export default function Blogs() {
   return (
-    <section className="py-1">
+    <section className="w-full">
       <motion.div
-        initial={{ opacity:0, y:18 }}
-        whileInView={{ opacity:1, y:0 }}
-        viewport={{ once:true }}
-        transition={{ duration:0.45 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
       >
-        <SectionHeader dot="#818cf8" title="Latest Articles" right="BLOG.md" />
+        <div className="flex items-center justify-between mb-12">
+          <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter">
+            Latest <span className="text-primary">Thoughts.</span>
+          </h2>
+          <Link href="https://medium.com/@adityasingh40675" target="_blank" className="hidden md:flex items-center gap-2 text-gray-500 hover:text-white transition-colors uppercase tracking-widest text-sm font-semibold">
+            All Articles <ArrowUpRight size={18} />
+          </Link>
+        </div>
 
-        <div className="space-y-3">
+        <div className="flex flex-col gap-6">
           {blogs.map((blog, i) => (
             <Link key={i} href={blog.link} target="_blank" className="block group">
               <motion.div
-                whileHover={{ x:3, transition:{duration:0.15} }}
-                className="p-4 border border-border"
-                style={{
-                  background:"hsl(var(--card))",
-                  borderLeft:"3px solid hsl(var(--border))",
-                  transition:"border-color 0.15s, box-shadow 0.15s",
-                }}
-                onMouseEnter={e=>{
-                  (e.currentTarget as HTMLElement).style.borderLeftColor="#818cf8";
-                  (e.currentTarget as HTMLElement).style.boxShadow="3px 3px 0 hsl(var(--foreground)/0.7)";
-                }}
-                onMouseLeave={e=>{
-                  (e.currentTarget as HTMLElement).style.borderLeftColor="hsl(var(--border))";
-                  (e.currentTarget as HTMLElement).style.boxShadow="none";
-                }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="p-8 border border-white/10 rounded-md bg-[#0a0a0a] hover:border-primary/40 transition-colors flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden"
               >
-                <div className="flex items-start justify-between gap-3 mb-2">
-                  <div className="flex items-start gap-2">
-                    <BookOpen size={14} className="text-indigo-400 flex-shrink-0 mt-0.5" />
-                    <span
-                      className="text-[13px] font-semibold text-foreground group-hover:text-indigo-400 transition-colors leading-snug"
-                      style={{ fontFamily:"'Syne',sans-serif" }}
-                    >
-                      {blog.title}
-                    </span>
+                {/* Background Hover Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+                <div className="flex-1 z-10">
+                  <div className="flex items-center gap-3 mb-3 text-sm font-semibold tracking-widest text-gray-500 uppercase">
+                    <span>{blog.date}</span>
+                    <span className="w-1 h-1 rounded-full bg-gray-500" />
+                    <span>{blog.readTime}</span>
                   </div>
-                  <ExternalLink size={12} className="text-muted-foreground flex-shrink-0 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-3 group-hover:text-primary transition-colors leading-tight">
+                    {blog.title}
+                  </h3>
+                  
+                  <p className="text-gray-400 font-light leading-relaxed mb-6 md:mb-0 max-w-3xl">
+                    {blog.description}
+                  </p>
                 </div>
 
-                <p className="text-[12px] text-muted-foreground mb-3 leading-relaxed" style={{ fontFamily:"'IBM Plex Mono',monospace" }}>
-                  {blog.description}
-                </p>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-1.5 flex-wrap">
-                    {blog.tags.map((t,ti)=>(
-                      <span key={ti} className="text-[9px] px-1.5 py-0.5 border" style={{ fontFamily:"monospace", color:"#818cf8", background:"rgba(129,140,248,0.08)", borderColor:"rgba(129,140,248,0.25)" }}>
-                        {t}
-                      </span>
-                    ))}
+                <div className="flex items-center gap-4 z-10 flex-shrink-0">
+                  <div className="flex gap-2 flex-wrap">
+                     {blog.tags.map((t, ti) => (
+                       <span key={ti} className="text-[10px] px-3 py-1 bg-white/5 border border-white/10 rounded-full text-gray-300 font-semibold tracking-widest uppercase">
+                         {t}
+                       </span>
+                     ))}
                   </div>
-                  <span className="text-[10px] text-muted-foreground" style={{ fontFamily:"monospace" }}>
-                    {blog.readTime} read · {blog.date}
-                  </span>
+                  <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white group-hover:bg-primary group-hover:border-primary group-hover:text-black transition-all">
+                     <ArrowUpRight size={20} />
+                  </div>
                 </div>
               </motion.div>
             </Link>
           ))}
         </div>
-
-        <div className="mt-3 flex justify-end">
-          <Link href="https://medium.com/@adityasingh40675" target="_blank"
-            className="text-[11px] text-muted-foreground hover:text-indigo-400 transition-colors" style={{ fontFamily:"monospace" }}>
-            more on medium ↗
+        
+        <div className="mt-8 md:hidden">
+          <Link href="https://medium.com/@adityasingh40675" target="_blank" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors uppercase tracking-widest text-sm font-semibold justify-end">
+            All Articles <ArrowUpRight size={18} />
           </Link>
         </div>
       </motion.div>

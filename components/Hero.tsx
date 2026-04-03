@@ -1,192 +1,216 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { Github, Linkedin, Twitter, FileText, Mail } from "lucide-react";
+import { Github, Linkedin, Twitter, Mail } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
-import LeetCodeIcon     from "./icons/LeetCodeIcon";
-import CodeChefIcon     from "./icons/CodeChefIcon";
-import CodeforcesIcon   from "./icons/CodeforcesIcon";
-const TYPING_STRINGS = [
-  "Full Stack Developer",
-  "Rust Enthusiast",
-  "Web3 Builder",
-  "DevOps Engineer",
-  "Backend Architect",
-];
-
-function TypewriterText() {
-  const [idx,     setIdx]   = useState(0);
-  const [charIdx, setChar]  = useState(0);
-  const [deleting, setDel]  = useState(false);
-  const [display,  setDisp] = useState("");
-
-  useEffect(() => {
-    const cur = TYPING_STRINGS[idx];
-    let t: NodeJS.Timeout;
-    if (!deleting) {
-      if (charIdx < cur.length) {
-        t = setTimeout(() => { setDisp(cur.slice(0, charIdx + 1)); setChar(c => c + 1); }, 65 + Math.random() * 35);
-      } else {
-        t = setTimeout(() => setDel(true), 1800);
-      }
-    } else {
-      if (charIdx > 0) {
-        t = setTimeout(() => { setDisp(cur.slice(0, charIdx - 1)); setChar(c => c - 1); }, 32);
-      } else {
-        t = setTimeout(() => {
-          setDel(false);
-          setIdx(i => (i + 1) % TYPING_STRINGS.length);
-        }, 32);
-      }
-    }
-    return () => clearTimeout(t);
-  }, [charIdx, deleting, idx]);
-
-  return (
-    <span className="text-primary">
-      {display}
-      <span className="cursor-blink inline-block w-px h-[1em] bg-primary align-middle ml-0.5" />
-    </span>
-  );
-}
+import LeetCodeIcon from "./icons/LeetCodeIcon";
+import CodeChefIcon from "./icons/CodeChefIcon";
+import CodeforcesIcon from "./icons/CodeforcesIcon";
 
 const SOCIALS = [
-  { href: "https://github.com/iaadi4",                                   label: "GitHub",     Icon: Github },
-  { href: "https://www.linkedin.com/in/adityasingh40675/",               label: "LinkedIn",   Icon: Linkedin },
-  { href: "https://x.com/iaadi8",                                        label: "X / Twitter",Icon: Twitter },
-  { href: "https://leetcode.com/u/iaadi4/",                              label: "LeetCode",   Icon: LeetCodeIcon },
-  { href: "https://www.codechef.com/users/iaadi7",                       label: "CodeChef",   Icon: CodeChefIcon },
-  { href: "https://codeforces.com/profile/chineseremaindertheoram",      label: "Codeforces", Icon: CodeforcesIcon },
-  { href: "mailto:adityasingh40675@gmail.com",                           label: "Email",      Icon: Mail },
+  { href: "https://github.com/iaadi4", label: "GitHub", Icon: Github },
+  {
+    href: "https://www.linkedin.com/in/adityasingh40675/",
+    label: "LinkedIn",
+    Icon: Linkedin,
+  },
+  { href: "https://x.com/iaadi8", label: "X", Icon: Twitter },
+  {
+    href: "https://leetcode.com/u/iaadi4/",
+    label: "LeetCode",
+    Icon: LeetCodeIcon,
+  },
+  {
+    href: "https://www.codechef.com/users/iaadi7",
+    label: "CodeChef",
+    Icon: CodeChefIcon,
+  },
+  {
+    href: "https://codeforces.com/profile/chineseremaindertheoram",
+    label: "Codeforces",
+    Icon: CodeforcesIcon,
+  },
+  { href: "mailto:adityasingh40675@gmail.com", label: "Email", Icon: Mail },
+];
+
+const STATS = [
+  { value: "10+", label: "Projects" },
+  { value: "2 YRS", label: "Experience" },
+  { value: "TS", label: "Core Stack" },
 ];
 
 export default function Hero() {
   return (
-    <section className="pb-8">
+    <div className="relative w-full min-h-[100dvh] overflow-hidden flex flex-col">
+
+      {/* ── Background Diagonal Marquees ── */}
+      <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center overflow-hidden">
+        {/* Tape 1 — White */}
+        <div className="absolute w-[160vw] bg-white transform -rotate-[10deg] py-2.5 flex overflow-hidden shadow-xl z-10 left-[-30vw] top-[40%] md:top-[66%]">
+          <div className="animate-marquee flex items-center gap-10 text-black font-extrabold text-xl md:text-2xl tracking-widest uppercase">
+            {Array.from({ length: 15 }).map((_, i) => (
+              <span key={`mq1-${i}`} className="flex items-center gap-10 whitespace-nowrap">
+                RUST &bull; NEXT.JS &bull; WEB3 &bull; DEVOPS
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Tape 2 — Dark */}
+        <div className="absolute w-[160vw] bg-[#111] border-y border-[#2a2a2a] transform rotate-[16deg] py-3 flex overflow-hidden shadow-2xl z-20 left-[-30vw] top-[48%] md:top-[52%]">
+          <div
+            className="animate-marquee flex items-center gap-6 text-white font-bold text-lg md:text-xl tracking-[0.2em] uppercase"
+            style={{ animationDirection: "reverse", animationDuration: "28s" }}
+          >
+            {Array.from({ length: 15 }).map((_, i) => (
+              <span key={`mq2-${i}`} className="flex items-center gap-6 whitespace-nowrap">
+                SOFTWARE ENGINEER <span className="text-primary">•</span>{" "}
+                FULL-STACK <span className="text-primary">•</span> ARCHITECTURE{" "}
+                <span className="text-primary">•</span> BACKEND
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+
+      {/* ── Hero Title — sits in the upper portion ── */}
       <motion.div
-        initial={{ opacity: 0, y: 14 }}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, delay: 0.15 }}
-        className="pt-5"
+        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-30 w-full select-none pt-[20vh] md:pt-[15vh]"
       >
-        {/* Avatar + name row */}
-        <div className="flex items-center gap-3 mb-4">
-          <div className="relative flex-shrink-0">
-            <Image
-              src="https://avatars.githubusercontent.com/iaadi4"
-              alt="Aditya Singh"
-              width={64}
-              height={64}
-              className="w-16 h-16 block object-cover"
-              style={{ border: "1px solid hsl(var(--border))" }}
-            />
-            {/* Online dot */}
-            <span className="absolute bottom-0.5 right-0.5 flex items-center justify-center w-3 h-3">
-              <span className="absolute inline-flex w-full h-full rounded-full bg-primary opacity-50 animate-ping" />
-              <span className="relative w-2 h-2 rounded-full bg-primary border border-card" />
+        <h1 className="w-full max-w-[1500px] mx-auto text-[clamp(2.5rem,11vw,12rem)] font-black leading-[0.85] tracking-tighter text-white uppercase flex flex-col drop-shadow-2xl">
+          {/* Row 1: Like 'BRAND.' */}
+          <div className="flex justify-start pl-[5vw] md:pl-[12%]">
+            <span>
+              Full-Stack<span className="text-primary text-[clamp(3rem,12vw,14rem)] leading-[0]">.</span>
             </span>
           </div>
 
-          <div className="min-w-0">
-            <h1
-              className="glitch-text text-[22px] font-extrabold tracking-tight text-foreground leading-tight"
-              data-text="Aditya Singh"
-              style={{ fontFamily: "'Syne', sans-serif" }}
-            >
-              Aditya Singh
-            </h1>
-            <div
-              className="text-[12px] mt-0.5 leading-snug"
-              style={{ fontFamily: "'IBM Plex Mono', monospace" }}
-            >
-              <TypewriterText />
-            </div>
+          {/* Row 2: Like 'IN-HOUSE' */}
+          <div className="flex justify-start pl-[5vw] md:pl-[48%] -mt-1 md:-mt-4">
+            <span className="text-primary">
+              Web3
+            </span>
+          </div>
+
+          {/* Row 3: Like 'DEVELOPMENT' */}
+          <div className="flex justify-start pl-[5vw] md:pl-[18%] -mt-1 md:-mt-4">
+            <span>
+              Developer
+            </span>
+          </div>
+        </h1>
+      </motion.div>
+
+      {/* ── Description — sits below the animation zone ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
+        className="relative z-30 flex flex-col items-center px-6 mt-auto mb-8 md:mb-12"
+      >
+        <p className="text-gray-400 text-sm md:text-base tracking-wide leading-relaxed text-center max-w-md md:max-w-xl">
+          Pre-final year @ IIIT Ranchi. Building high-perf web apps, backend
+          architecture &amp; cloud infrastructure. Currently deep in Rust
+          &amp; Web3.
+        </p>
+      </motion.div>
+
+      {/* ── Bottom Bar: Socials | View Resume | Stats ── */}
+      <motion.div
+        initial={{ y: 40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
+        className="relative z-30 w-full"
+      >
+        {/* Mobile layout */}
+        <div className="flex flex-col items-center gap-5 px-4 pb-8 pt-6 lg:hidden">
+          {/* View Resume */}
+          <Link
+            href="https://drive.google.com/file/d/11i5VdNwoAH3aCR4YobdH1kvjh3x9lDIP/view?usp=drive_link"
+            target="_blank"
+            className="group relative inline-flex items-center justify-center px-10 py-3.5 text-sm font-bold text-black bg-white rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95"
+          >
+            <span className="absolute inset-0 bg-primary -translate-x-[105%] group-hover:translate-x-0 transition-transform duration-300 ease-out" />
+            <span className="relative flex items-center gap-2 group-hover:text-white transition-colors">
+              View Resume <span className="group-hover:translate-x-1 transition-transform">→</span>
+            </span>
+          </Link>
+
+          {/* Socials */}
+          <div className="flex flex-wrap justify-center gap-2.5">
+            {SOCIALS.map(({ href, label, Icon }) => (
+              <Link
+                key={label}
+                href={href}
+                target={href.startsWith("mailto") ? "_self" : "_blank"}
+                title={label}
+                className="text-gray-400 hover:text-white transition-all p-2.5 border border-gray-800 bg-white/5 rounded-full hover:border-primary hover:bg-primary/10 hover:shadow-[0_0_12px_var(--color-primary)]"
+              >
+                <Icon size={17} />
+              </Link>
+            ))}
+          </div>
+
+          {/* Stats */}
+          <div className="flex items-center gap-8 text-[10px] font-bold tracking-[0.18em] text-gray-500 uppercase border-t border-white/10 pt-4 w-full justify-center">
+            {STATS.map(({ value, label }) => (
+              <div key={label} className="flex flex-col items-center gap-0.5">
+                <span className="text-white text-base font-black">{value}</span>
+                <span>{label}</span>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Location chip */}
-        <div
-          className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground border border-border px-2 py-1 mb-4"
-          style={{ fontFamily: "monospace" }}
-        >
-          <span className="text-primary">◈</span>
-          IIIT Ranchi · India
-        </div>
-
-        {/* Bio — consistent green left border, no colored inline pills */}
-        <p
-          className="text-[13px] text-muted-foreground mb-5 leading-relaxed border-l-2 pl-3"
-          style={{
-            fontFamily: "'IBM Plex Mono', monospace",
-            borderLeftColor: "hsl(var(--primary))",
-          }}
-        >
-          Pre-final year @{" "}
-          <strong className="text-foreground font-semibold">IIIT Ranchi</strong>.{" "}
-          Building high-perf web apps, backend architecture &amp; cloud infrastructure.
-          Currently deep in{" "}
-          <strong className="text-primary font-semibold">Web3</strong>,{" "}
-          <strong className="text-primary font-semibold">Rust</strong> and{" "}
-          <strong className="text-primary font-semibold">Next.js</strong>.
-        </p>
-
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-2 mb-5">
-          {[
-            { value: "10+",     label: "Projects" },
-            { value: "2 YRS",   label: "Experience" },
-            { value: "Rust+TS", label: "Core Stack" },
-          ].map(s => (
-            <div
-              key={s.label}
-              className="py-2 px-1 text-center border border-border"
-              style={{ background: "hsl(var(--card))" }}
-            >
-              <div
-                className="text-[15px] font-bold text-primary leading-none mb-0.5"
-                style={{ fontFamily: "'Syne', sans-serif" }}
+        {/* Desktop layout — single pill-bar */}
+        <div className="hidden lg:flex items-center justify-between px-10 xl:px-16 py-5 border-t border-white/[0.07] bg-black/30 backdrop-blur-sm">
+          {/* Left: socials */}
+          <div className="flex items-center gap-2.5">
+            {SOCIALS.map(({ href, label, Icon }) => (
+              <Link
+                key={label}
+                href={href}
+                target={href.startsWith("mailto") ? "_self" : "_blank"}
+                title={label}
+                className="text-gray-500 hover:text-white transition-all p-2.5 border border-transparent hover:border-primary/40 hover:bg-primary/10 hover:shadow-[0_0_12px_var(--color-primary)] rounded-full"
               >
-                {s.value}
-              </div>
-              <div
-                className="text-[9px] text-muted-foreground tracking-widest uppercase"
-                style={{ fontFamily: "monospace" }}
-              >
-                {s.label}
-              </div>
-            </div>
-          ))}
-        </div>
+                <Icon size={16} />
+              </Link>
+            ))}
+          </div>
 
-        {/* Social icons */}
-        <div className="flex flex-wrap gap-2 mb-4">
-          {SOCIALS.map(({ href, label, Icon }) => (
-            <Link
-              key={label}
-              href={href}
-              target={href.startsWith("mailto") ? "_self" : "_blank"}
-              title={label}
-              className="group flex items-center justify-center w-8 h-8 border border-border text-muted-foreground transition-all hover:border-primary hover:text-primary hover:bg-primary/8"
-            >
-              <Icon size={14} />
-            </Link>
-          ))}
-        </div>
+          {/* Center: CTA */}
+          <Link
+            href="https://drive.google.com/file/d/11i5VdNwoAH3aCR4YobdH1kvjh3x9lDIP/view?usp=drive_link"
+            target="_blank"
+            className="group relative inline-flex items-center justify-center px-9 py-3 text-sm font-bold text-black bg-white rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95 shadow-[0_0_24px_rgba(255,255,255,0.15)]"
+          >
+            <span className="absolute inset-0 bg-primary -translate-x-[105%] group-hover:translate-x-0 transition-transform duration-300 ease-out" />
+            <span className="relative flex items-center gap-2 group-hover:text-white transition-colors">
+              View Resume <span className="group-hover:translate-x-1 transition-transform">→</span>
+            </span>
+          </Link>
 
-        {/* Resume button */}
-        <Link
-          href="https://drive.google.com/file/d/11i5VdNwoAH3aCR4YobdH1kvjh3x9lDIP/view?usp=drive_link"
-          target="_blank"
-          className="group flex items-center gap-2 w-full px-4 py-2.5 border border-border text-foreground text-[12px] font-semibold tracking-widest uppercase transition-all hover:border-primary hover:text-primary hover:bg-primary/8"
-          style={{ fontFamily: "'IBM Plex Mono', monospace" }}
-        >
-          <FileText size={13} />
-          View Resume
-          <span className="ml-auto opacity-40 group-hover:opacity-80 transition-opacity">↗</span>
-        </Link>
+          {/* Right: stats */}
+          <div className="flex items-center gap-8 text-[10px] font-bold tracking-[0.18em] text-gray-500 uppercase">
+            {STATS.map(({ value, label }, i) => (
+              <div key={label} className="flex items-center gap-8">
+                <div className="flex flex-col items-center gap-0.5">
+                  <span className="text-white text-xl font-black">{value}</span>
+                  <span>{label}</span>
+                </div>
+                {i < STATS.length - 1 && (
+                  <div className="w-px h-6 bg-white/10" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       </motion.div>
-    </section>
+    </div>
   );
 }

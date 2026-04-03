@@ -117,54 +117,45 @@ export default function LofiPlayer() {
       initial={{ y: 80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.3, duration: 0.4, ease: "easeOut" }}
-      className="fixed bottom-5 right-5 z-50"
-      style={{ minWidth: 210 }}
+      className="fixed bottom-5 right-5 z-50 rounded-lg overflow-hidden border border-white/10 shadow-2xl"
+      style={{ minWidth: 230 }}
     >
       <div
-        style={{
-          background: "hsl(var(--card))",
-          border: "1px solid hsl(var(--border))",
-          backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)",
-        }}
+        className="bg-[#0a0a0a]/90 backdrop-blur-md"
       >
         {/* Always-visible strip */}
         <div
-          className="flex items-center gap-3 px-3 py-2.5 cursor-pointer select-none"
+          className="flex items-center gap-4 px-4 py-3 cursor-pointer select-none hover:bg-white/5 transition-colors"
           onClick={() => setExpanded(e => !e)}
         >
           {/* Vinyl */}
           <svg
-            width="26" height="26" viewBox="0 0 26 26"
+            width="28" height="28" viewBox="0 0 26 26"
             style={{ transform: `rotate(${angle}deg)`, flexShrink: 0 }}
           >
-            <circle cx="13" cy="13" r="12" fill="hsl(var(--muted))" stroke="hsl(var(--border))" strokeWidth="1" />
-            <circle cx="13" cy="13" r="9"  fill="hsl(var(--card))" />
+            <circle cx="13" cy="13" r="12" fill="#111" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+            <circle cx="13" cy="13" r="9"  fill="#050505" />
             {[7, 9, 11].map(r => (
-              <circle key={r} cx="13" cy="13" r={r} fill="none" stroke="hsl(var(--border))" strokeWidth="0.5" />
+              <circle key={r} cx="13" cy="13" r={r} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
             ))}
-            <circle cx="13" cy="13" r="3" fill="hsl(var(--primary))" />
-            <circle cx="13" cy="13" r="1.2" fill="hsl(var(--card))" />
+            <circle cx="13" cy="13" r="3" fill="var(--color-primary)" />
+            <circle cx="13" cy="13" r="1.2" fill="#000" />
           </svg>
 
           <div className="flex-1 min-w-0">
             <div
-              className="text-[11px] font-semibold leading-tight truncate"
-              style={{
-                fontFamily: "monospace",
-                color: playing ? "hsl(var(--primary))" : "hsl(var(--foreground))",
-              }}
+              className={`text-xs font-semibold leading-tight truncate tracking-wider uppercase ${playing ? "text-primary" : "text-white"}`}
             >
               {loading ? "▶ loading..." : playing ? `▶ ${track.title}` : "♪ lofi player"}
             </div>
-            <div className="text-[10px] text-muted-foreground leading-tight" style={{ fontFamily: "monospace" }}>
+            <div className="text-[10px] text-gray-500 leading-tight uppercase tracking-widest mt-0.5">
               {playing ? track.bpm : "click to expand"}
             </div>
           </div>
 
           <ChevronUp
-            size={13}
-            className="text-muted-foreground flex-shrink-0 transition-transform duration-200"
+            size={14}
+            className="text-gray-400 flex-shrink-0 transition-transform duration-200"
             style={{ transform: expanded ? "rotate(0deg)" : "rotate(180deg)" }}
           />
         </div>
@@ -177,23 +168,16 @@ export default function LofiPlayer() {
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="overflow-hidden"
-              style={{ borderTop: "1px solid hsl(var(--border))" }}
+              className="overflow-hidden border-t border-white/10"
             >
-              <div className="px-3 pt-3 pb-3">
+              <div className="px-4 py-4">
                 {/* Track list */}
-                <div className="space-y-1 mb-3">
+                <div className="space-y-1.5 mb-4">
                   {TRACKS.map((t, i) => (
                     <button
                       key={i}
                       onClick={e => { e.stopPropagation(); selectTrack(i); }}
-                      className="w-full text-left px-2 py-1.5 text-[10px] transition-colors"
-                      style={{
-                        fontFamily: "monospace",
-                        background:   trackIdx === i ? "hsl(var(--primary) / 0.12)" : "transparent",
-                        color:        trackIdx === i ? "hsl(var(--primary))"         : "hsl(var(--muted-foreground))",
-                        border:       trackIdx === i ? "1px solid hsl(var(--primary) / 0.25)" : "1px solid transparent",
-                      }}
+                      className={`w-full text-left px-3 py-2 text-[10px] uppercase tracking-widest font-semibold rounded-md transition-all ${trackIdx === i ? "bg-primary/10 text-primary border border-primary/30" : "text-gray-500 border border-transparent hover:text-white"}`}
                     >
                       {trackIdx === i && playing ? "▶ " : "○ "}{t.title}
                       <span className="ml-1 opacity-50">· {t.bpm}</span>
@@ -202,7 +186,7 @@ export default function LofiPlayer() {
                 </div>
 
                 {/* Controls */}
-                <div className="flex items-center gap-2 mb-3">
+                <div className="flex items-center gap-3 mb-4">
                   {[
                     {
                       onClick: (e: React.MouseEvent) => { e.stopPropagation(); togglePlay(); },
@@ -224,18 +208,11 @@ export default function LofiPlayer() {
                       key={i}
                       onClick={onClick}
                       disabled={loading && i === 0}
-                      className="w-8 h-8 flex items-center justify-center transition-colors hover:text-foreground"
-                      style={{
-                        border: "1px solid hsl(var(--border))",
-                        color: active ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))",
-                        opacity: loading && i === 0 ? 0.5 : 1,
-                      }}
-                      onMouseEnter={e => (e.currentTarget.style.borderColor = "hsl(var(--primary))")}
-                      onMouseLeave={e => (e.currentTarget.style.borderColor = "hsl(var(--border))")}
+                      className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${active ? "border-primary text-primary" : "border-white/20 text-gray-400 hover:border-white/50 hover:text-white"} ${loading && i === 0 ? "opacity-50" : "opacity-100"}`}
                     >
                       {loading && i === 0
-                        ? <span className="text-[8px]" style={{ fontFamily: "monospace" }}>...</span>
-                        : Icon && <Icon size={13} />}
+                        ? <span className="text-[8px] animate-pulse">...</span>
+                        : Icon && <Icon size={14} />}
                     </button>
                   ))}
 
@@ -244,18 +221,17 @@ export default function LofiPlayer() {
                     value={muted ? 0 : volume}
                     onChange={e => { e.stopPropagation(); setVolume(Number(e.target.value)); setMuted(false); }}
                     onClick={e => e.stopPropagation()}
-                    className="flex-1 h-1"
-                    style={{ accentColor: "hsl(var(--primary))" }}
+                    className="flex-1 h-1 bg-white/20 rounded-full appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary"
                   />
                 </div>
 
                 {/* Waveform */}
-                <div className="flex items-end gap-0.5 h-5">
+                <div className="flex items-end gap-1 h-6 px-1">
                   {Array.from({ length: 22 }).map((_, i) => (
                     <motion.div
                       key={i}
-                      className="flex-1"
-                      style={{ background: "hsl(var(--primary))", opacity: 0.5 }}
+                      className="flex-1 rounded-t-sm"
+                      style={{ background: "var(--color-primary)", opacity: 0.6 }}
                       animate={
                         playing
                           ? { height: [`${15 + Math.sin(i * 0.9) * 55}%`, `${55 + Math.sin(i * 1.3 + 1) * 35}%`, `${15 + Math.sin(i * 0.9) * 55}%`] }
