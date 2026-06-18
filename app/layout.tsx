@@ -1,24 +1,24 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
-import { Outfit } from "next/font/google";
+import { Inter } from "next/font/google";
 
-const outfit = Outfit({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-outfit",
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
   title: "Aditya Singh | Full Stack Developer",
-  description: "Portfolio of Aditya Singh — Brand. Design. Product. In-House Development. &More",
+  description: "Portfolio of Aditya Singh",
   icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${outfit.variable} font-sans antialiased bg-black text-white`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+      <body className={`${inter.variable} font-sans antialiased bg-white text-black dark:bg-[#0a0a0a] dark:text-white transition-colors duration-300`}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={true}>
           {children}
         </ThemeProvider>
       </body>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#ffffff" />
+  <circle cx="100" cy="100" r="80" fill="none" stroke="#1e3a8a" stroke-width="12" />
+  <circle cx="100" cy="100" r="60" fill="none" stroke="#2563eb" stroke-width="4" />
+  <path d="M 60 100 A 40 40 0 0 1 140 100 A 40 40 0 0 1 60 100" fill="none" stroke="#dc2626" stroke-width="4" />
+  <text x="100" y="105" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#1e3a8a" text-anchor="middle" dominant-baseline="middle">IIIT</text>
+  <text x="100" y="135" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e3a8a" text-anchor="middle" dominant-baseline="middle">RANCHI</text>
+</svg>

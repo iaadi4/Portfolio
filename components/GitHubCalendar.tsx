@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { ActivityCalendar } from "react-activity-calendar";
+import { useTheme } from "next-themes";
 
 interface Contribution {
   date: string;
@@ -16,6 +17,7 @@ export default function Activity() {
   const [loading, setLoad]  = useState(true);
   const [error, setError] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     fetch("https://github-contributions-api.jogruber.de/v4/iaadi4?y=last")
@@ -47,17 +49,17 @@ export default function Activity() {
         transition={{ duration: 0.8 }}
       >
         <div className="flex items-center justify-between mb-12">
-          <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter">
-            Proof of <span className="text-primary">Work.</span>
+          <h2 className="text-4xl md:text-6xl font-black text-black dark:text-white uppercase tracking-tighter">
+            Proof of <span className="text-indigo-500">Work.</span>
           </h2>
           {!loading && !error && total > 0 && (
             <div className="hidden md:flex text-gray-500 uppercase tracking-widest text-sm font-semibold">
-              <span className="text-white mr-1">{total.toLocaleString()}</span> Contributions
+              <span className="text-black dark:text-white mr-1">{total.toLocaleString()}</span> Contributions
             </div>
           )}
         </div>
 
-        <div className="p-8 border border-white/10 rounded-md bg-[#0a0a0a] overflow-hidden flex flex-col items-center justify-center w-full">
+        <div className="p-8 border border-gray-200 dark:border-white/10 rounded-md bg-white dark:bg-[#0a0a0a] overflow-hidden flex flex-col items-center justify-center w-full">
           {loading && (
             <div className="animate-pulse rounded bg-white/5 h-32 w-full max-w-4xl" />
           )}
@@ -74,10 +76,10 @@ export default function Activity() {
                 <ActivityCalendar
                   data={data}
                   theme={{
-                    light: ["#161b22", "#fb923c", "#f97316", "#ea580c", "#c2410c"],
-                    dark:  ["#111", "#f9731655", "#f9731699", "#f97316cc", "#f97316"],
+                    light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
+                    dark:  ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"],
                   }}
-                  colorScheme="dark"
+                  colorScheme={theme === "dark" ? "dark" : "light"}
                   blockSize={14}
                   blockRadius={3}
                   blockMargin={4}
