@@ -31,8 +31,8 @@ const DATA = {
   education: [
     {
       institution: "IIIT Ranchi",
-      degree: "Bachelor of Technology in Computer Science and Engineering",
-      date: "2022 - 2026",
+      degree: "Bachelor of Technology in Electronics and Communication",
+      date: "2023 - 2027",
       logo: "/iiit-ranchi.svg"
     }
   ],
@@ -105,7 +105,6 @@ function ThemeToggle() {
   if (!mounted) return <div className="w-9 h-9" />;
 
   return (
-    <motion.button
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
