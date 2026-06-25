@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Github, Linkedin, Twitter, Mail, Home as HomeIcon, FileText, Moon, Sun, Globe, ArrowUpRight, Code2, BookOpen } from "lucide-react";
+import { Github, Linkedin, Twitter, Mail, Home as HomeIcon, Moon, Sun, Globe, ArrowUpRight, Code2, BookOpen } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -100,11 +100,14 @@ function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
   const [hovered, setHovered] = useState(false);
 
+  // This effect is intentionally used to avoid rendering theme-dependent UI during SSR.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
 
   if (!mounted) return <div className="w-9 h-9" />;
 
   return (
+    <motion.button
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -130,7 +133,13 @@ function ThemeToggle() {
   );
 }
 
-function DockItem({ href, label, icon: Icon }: any) {
+interface DockItemProps {
+  href: string;
+  label: string;
+  icon: React.ComponentType<{ size: number }>;
+}
+
+function DockItem({ href, label, icon: Icon }: DockItemProps) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -193,7 +202,7 @@ export default function Home() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, ease: "easeOut" }}
             >
-              Hi, I'm <span className="text-indigo-500">{DATA.name.split(" ")[0]}</span>
+              Hi, I&apos;m <span className="text-indigo-500">{DATA.name.split(" ")[0]}</span>
             </motion.h1>
             <motion.p 
               className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl leading-relaxed"
