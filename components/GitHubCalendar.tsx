@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import { motion } from "framer-motion";
 import { ActivityCalendar } from "react-activity-calendar";
 import { useTheme } from "next-themes";
+import { SectionLabel } from "@/components/ui/SectionLabel";
+import { FadeIn } from "@/components/ui/FadeIn";
 
 interface Contribution {
   date: string;
@@ -11,79 +12,96 @@ interface Contribution {
   level: number;
 }
 
+const ORANGE_THEME = {
+  light: ["#e8e3d5", "#ffd4c2", "#ff9b73", "#ff5f2e", "#c43a12"],
+  dark: ["#1c1c1c", "#5c2a16", "#b8441a", "#ff5f2e", "#ffb089"],
+};
+
 export default function Activity() {
   const [data, setData] = useState<Contribution[] | null>(null);
   const [total, setTotal] = useState(0);
-  const [loading, setLoad]  = useState(true);
+  const [loading, setLoad] = useState(true);
   const [error, setError] = useState(false);
+  const boxRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [blockSize, setBlockSize] = useState(13);
+
+  // Avoid rendering theme-dependent calendar during SSR.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     fetch("https://github-contributions-api.jogruber.de/v4/iaadi4?y=last")
-      .then(r => r.json())
-      .then(json => {
+      .then((r) => r.json())
+      .then((json) => {
         const c = json.contributions ?? [];
         setData(c);
         setTotal(c.reduce((s: number, d: Contribution) => s + d.count, 0));
         setLoad(false);
       })
-      .catch(() => { setError(true); setLoad(false); });
+      .catch(() => {
+        setError(true);
+        setLoad(false);
+      });
   }, []);
 
   useEffect(() => {
-    if (scrollRef.current && data) {
-      setTimeout(() => {
-        if (scrollRef.current)
-          scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
-      }, 200);
-    }
+    const el = boxRef.current;
+    if (!el) return;
+
+    const fit = () => {
+      const width = el.clientWidth;
+      const next = Math.max(10, Math.min(15, Math.floor((width - 48) / 53 - 3)));
+      setBlockSize(next);
+    };
+
+    fit();
+    const observer = new ResizeObserver(fit);
+    observer.observe(el);
+    return () => observer.disconnect();
   }, [data]);
 
+  useEffect(() => {
+    if (scrollRef.current && data) {
+      scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
+    }
+  }, [data, blockSize]);
+
   return (
-    <section className="w-full">
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
-        <div className="flex items-center justify-between mb-12">
-          <h2 className="text-4xl md:text-6xl font-black text-black dark:text-white uppercase tracking-tighter">
-            Proof of <span className="text-indigo-500">Work.</span>
-          </h2>
+    <section id="work" className="border-b border-line px-5 py-12 md:px-10">
+      <FadeIn>
+        <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+          <SectionLabel>GitHub</SectionLabel>
           {!loading && !error && total > 0 && (
-            <div className="hidden md:flex text-gray-500 uppercase tracking-widest text-sm font-semibold">
-              <span className="text-black dark:text-white mr-1">{total.toLocaleString()}</span> Contributions
-            </div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted sm:text-[11px]">
+              <span className="text-fg">{total.toLocaleString()}</span> contributions
+            </p>
           )}
         </div>
 
-        <div className="p-8 border border-gray-200 dark:border-white/10 rounded-md bg-white dark:bg-[#0a0a0a] overflow-hidden flex flex-col items-center justify-center w-full">
-          {loading && (
-            <div className="animate-pulse rounded bg-white/5 h-32 w-full max-w-4xl" />
-          )}
+        <div ref={boxRef} className="border-t border-line px-0 py-5">
+          {loading && <div className="h-36 w-full animate-pulse bg-line/40" />}
 
           {error && (
-            <div className="flex items-center justify-center text-sm text-gray-500 h-32 uppercase tracking-widest">
+            <div className="flex h-36 items-center justify-center font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
               Could not load contribution data.
             </div>
           )}
 
-          {data && (
-            <div className="w-full max-w-full overflow-x-auto hide-scrollbar flex justify-center py-2" ref={scrollRef}>
-              <div className="min-w-max">
+          {data && mounted && (
+            <div className="hide-scrollbar overflow-x-auto" ref={scrollRef}>
+              <div className="github-calendar min-w-max">
                 <ActivityCalendar
                   data={data}
-                  theme={{
-                    light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
-                    dark:  ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"],
-                  }}
-                  colorScheme={theme === "dark" ? "dark" : "light"}
-                  blockSize={14}
-                  blockRadius={3}
-                  blockMargin={4}
-                  fontSize={12}
+                  theme={ORANGE_THEME}
+                  colorScheme={resolvedTheme === "light" ? "light" : "dark"}
+                  blockSize={blockSize}
+                  blockRadius={0}
+                  blockMargin={3}
+                  fontSize={11}
+                  hideTotalCount
                   showWeekdayLabels
                   renderBlock={(block, activity) =>
                     React.cloneElement(block, {
@@ -101,7 +119,7 @@ export default function Activity() {
             </div>
           )}
         </div>
-      </motion.div>
+      </FadeIn>
     </section>
   );
 }
