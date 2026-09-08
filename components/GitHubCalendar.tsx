@@ -101,7 +101,7 @@ export default function Activity() {
                   blockRadius={0}
                   blockMargin={3}
                   fontSize={11}
-                  hideTotalCount
+                  showTotalCount={false}
                   showWeekdayLabels
                   renderBlock={(block, activity) =>
                     React.cloneElement(block, {
