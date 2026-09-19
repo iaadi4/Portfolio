@@ -1,10 +1,8 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useSyncExternalStore } from "react";
 import { ActivityCalendar } from "react-activity-calendar";
-import { useTheme } from "next-themes";
-import { SectionLabel } from "@/components/ui/SectionLabel";
-import { FadeIn } from "@/components/ui/FadeIn";
+import { motion } from "framer-motion";
 
 interface Contribution {
   date: string;
@@ -12,9 +10,8 @@ interface Contribution {
   level: number;
 }
 
-const ORANGE_THEME = {
-  light: ["#e8e3d5", "#ffd4c2", "#ff9b73", "#ff5f2e", "#c43a12"],
-  dark: ["#1c1c1c", "#5c2a16", "#b8441a", "#ff5f2e", "#ffb089"],
+const GITHUB_THEME = {
+  light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
 };
 
 export default function Activity() {
@@ -22,15 +19,12 @@ export default function Activity() {
   const [total, setTotal] = useState(0);
   const [loading, setLoad] = useState(true);
   const [error, setError] = useState(false);
-  const boxRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const [blockSize, setBlockSize] = useState(13);
-
-  // Avoid rendering theme-dependent calendar during SSR.
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => setMounted(true), []);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   useEffect(() => {
     fetch("https://github-contributions-api.jogruber.de/v4/iaadi4?y=last")
@@ -48,60 +42,56 @@ export default function Activity() {
   }, []);
 
   useEffect(() => {
-    const el = boxRef.current;
-    if (!el) return;
-
-    const fit = () => {
-      const width = el.clientWidth;
-      const next = Math.max(10, Math.min(15, Math.floor((width - 48) / 53 - 3)));
-      setBlockSize(next);
-    };
-
-    fit();
-    const observer = new ResizeObserver(fit);
-    observer.observe(el);
-    return () => observer.disconnect();
+    if (scrollRef.current && data) {
+      setTimeout(() => {
+        if (scrollRef.current) {
+          scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
+        }
+      }, 150);
+    }
   }, [data]);
 
-  useEffect(() => {
-    if (scrollRef.current && data) {
-      scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
-    }
-  }, [data, blockSize]);
-
   return (
-    <section id="work" className="border-b border-line px-5 py-12 md:px-10">
-      <FadeIn>
-        <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
-          <SectionLabel>GitHub</SectionLabel>
+    <section className="w-full">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-6">
+          <h2 className="text-xl font-bold tracking-tight text-zinc-900">
+            GitHub Contributions
+          </h2>
           {!loading && !error && total > 0 && (
-            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted sm:text-[11px]">
-              <span className="text-fg">{total.toLocaleString()}</span> contributions
+            <p className="text-xs font-mono text-zinc-500">
+              <span className="font-semibold text-zinc-900">{total.toLocaleString()}</span> contributions in the last year
             </p>
           )}
         </div>
 
-        <div ref={boxRef} className="border-t border-line px-0 py-5">
-          {loading && <div className="h-36 w-full animate-pulse bg-line/40" />}
+        <div className="p-6 border border-zinc-200 rounded-2xl bg-white shadow-sm overflow-hidden flex flex-col items-center justify-center w-full">
+          {loading && (
+            <div className="h-32 w-full animate-pulse rounded-xl bg-zinc-100" />
+          )}
 
           {error && (
-            <div className="flex h-36 items-center justify-center font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
+            <div className="flex h-32 items-center justify-center font-mono text-xs uppercase tracking-wider text-zinc-400">
               Could not load contribution data.
             </div>
           )}
 
           {data && mounted && (
-            <div className="hide-scrollbar overflow-x-auto" ref={scrollRef}>
-              <div className="github-calendar min-w-max">
+            <div className="w-full overflow-x-auto hide-scrollbar flex justify-center py-2" ref={scrollRef}>
+              <div className="min-w-max">
                 <ActivityCalendar
                   data={data}
-                  theme={ORANGE_THEME}
-                  colorScheme={resolvedTheme === "light" ? "light" : "dark"}
-                  blockSize={blockSize}
-                  blockRadius={0}
+                  theme={GITHUB_THEME}
+                  colorScheme="light"
+                  blockSize={13}
+                  blockRadius={3}
                   blockMargin={3}
                   fontSize={11}
-                  showTotalCount={false}
                   showWeekdayLabels
                   renderBlock={(block, activity) =>
                     React.cloneElement(block, {
@@ -119,7 +109,7 @@ export default function Activity() {
             </div>
           )}
         </div>
-      </FadeIn>
+      </motion.div>
     </section>
   );
 }

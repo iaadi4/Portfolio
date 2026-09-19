@@ -9,7 +9,7 @@ export const DATA = {
       company: "Tutedude",
       role: "Software Engineer Intern",
       date: "Aug 2026 - Present",
-      logo: "/tutedude.svg",
+      logo: "/tutedude.png",
       href: "https://tutedude.com",
     },
     {
@@ -56,7 +56,6 @@ export const DATA = {
       tech: ["Next.js", "Express", "WebSockets", "BullMQ"],
       link: "https://github.com/iaadi4/inklink",
       image: "/projects/inklink.png",
-      diagram: "circles" as const,
     },
     {
       title: "Ora",
@@ -65,7 +64,6 @@ export const DATA = {
       tech: ["Next.js", "FastAPI", "OpenAI Whisper"],
       link: "https://github.com/iaadi4/ora",
       image: "/projects/ora.png",
-      diagram: "pyramid" as const,
     },
     {
       title: "SEO Boost",
@@ -74,7 +72,6 @@ export const DATA = {
       tech: ["Next.js", "TypeScript", "SEO", "Analytics"],
       link: "https://github.com/iaadi4/SeoBoost",
       image: "/projects/seoboost.png",
-      diagram: "venn" as const,
     },
     {
       title: "FocusOS",
@@ -83,7 +80,6 @@ export const DATA = {
       tech: ["TypeScript", "WebExtension", "Firefox"],
       link: "https://github.com/iaadi4/FocusOS",
       image: "/projects/focusos.png",
-      diagram: "hex" as const,
     },
   ],
   blog: {
@@ -93,70 +89,3 @@ export const DATA = {
     tags: ["Backend", "PostgreSQL", "Optimization"],
   },
 };
-
-export const NAV_SECTIONS = [
-  { id: "intro", index: "01", label: "Intro" },
-  { id: "experience", index: "02", label: "Experience" },
-  { id: "education", index: "03", label: "Education" },
-  { id: "skills", index: "04", label: "Skills" },
-  { id: "projects", index: "05", label: "Projects" },
-  { id: "writing", index: "06", label: "Writing" },
-  { id: "work", index: "07", label: "Work" },
-  { id: "contact", index: "08", label: "Contact" },
-];
-
-export const PAGES = [
-  { href: "#intro", label: "Home" },
-  { href: "#projects", label: "Projects" },
-  { href: "#writing", label: "Writing" },
-  { href: "#contact", label: "Contact" },
-];
-
-export const SOCIALS = [
-  { href: "https://github.com/iaadi4", label: "GitHub", id: "github" },
-  { href: "https://www.linkedin.com/in/adityasingh40675/", label: "LinkedIn", id: "linkedin" },
-  { href: "https://x.com/iaadi8", label: "X", id: "twitter" },
-  { href: "https://leetcode.com/u/iaadi4/", label: "LeetCode", id: "leetcode" },
-  { href: "https://www.codechef.com/users/iaadi7", label: "CodeChef", id: "codechef" },
-  { href: "https://codeforces.com/profile/chineseremaindertheoram", label: "Codeforces", id: "codeforces" },
-  { href: "mailto:adityasingh40675@gmail.com", label: "Email", id: "email" },
-];
-
-export const CAPABILITIES = [
-  {
-    index: "01",
-    title: "Full Stack",
-    items: ["Next.js", "React.js", "TypeScript", "Express.js", "FastAPI", "Hono"],
-  },
-  {
-    index: "02",
-    title: "Infrastructure",
-    items: ["AWS", "Docker", "Kubernetes", "PostgreSQL", "Redis", "Prometheus"],
-  },
-  {
-    index: "03",
-    title: "Agentic AI",
-    items: ["Langchain", "Langgraph", "Langsmith"],
-  },
-];
-
-export const SKILL_GROUPS = [
-  {
-    title: "Languages",
-    items: ["Rust", "C++", "TypeScript", "JavaScript", "SQL", "Python"],
-  },
-  {
-    title: "Frameworks",
-    items: ["React.js", "Next.js", "Express.js", "TailwindCSS", "FastAPI", "Hono"],
-  },
-  {
-    title: "Infrastructure",
-    items: ["AWS", "Docker", "PostgreSQL", "MongoDB", "Redis", "Kubernetes", "Prometheus", "Grafana", "BullMQ"],
-  },
-  {
-    title: "AI",
-    items: ["Langchain", "Langgraph", "Langsmith"],
-  },
-];
-
-export const EMAIL = "mailto:adityasingh40675@gmail.com";

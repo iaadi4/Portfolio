@@ -1,180 +1,29 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:is(.dark *));
-
 @theme {
-  --color-bg: var(--bg);
-  --color-fg: var(--fg);
-  --color-cream: var(--cream);
-  --color-orange: var(--orange);
-  --color-muted: var(--muted);
-  --color-line: var(--line);
-  --color-card: var(--card);
-  --color-card-fg: var(--card-fg);
-  --color-surface: var(--surface);
-  --color-stipple: var(--stipple);
-  --color-grid-line: var(--grid-line);
-  --color-invert: var(--invert);
-  --color-invert-fg: var(--invert-fg);
-
-  --radius-lg: 0px;
-  --radius-md: 0px;
-  --radius-sm: 0px;
-}
-
-@theme inline {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-instrument), ui-serif, Georgia, "Times New Roman", serif;
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
 }
 
 @layer base {
-  :root {
-    --bg: #f3eee4;
-    --fg: #121212;
-    --cream: #e8e3d5;
-    --orange: #ff5f2e;
-    --muted: #6b6560;
-    --line: rgba(18, 18, 18, 0.12);
-    --card: #fffcf5;
-    --card-fg: #121212;
-    --surface: #e8e3d5;
-    --stipple: rgba(18, 18, 18, 0.2);
-    --grid-line: rgba(18, 18, 18, 0.08);
-    --invert: #ff5f2e;
-    --invert-fg: #121212;
-  }
-
-  .dark {
-    --bg: #121212;
-    --fg: #e8e3d5;
-    --cream: #e8e3d5;
-    --orange: #ff5f2e;
-    --muted: #8a8580;
-    --line: rgba(232, 227, 213, 0.1);
-    --card: #e8e3d5;
-    --card-fg: #121212;
-    --surface: #1a1a1a;
-    --stipple: rgba(232, 227, 213, 0.22);
-    --grid-line: rgba(232, 227, 213, 0.06);
-    --invert: #ff5f2e;
-    --invert-fg: #121212;
-  }
-
   html {
     scroll-behavior: smooth;
   }
 
-  section[id] {
-    scroll-margin-top: 3.5rem;
-  }
-
-  * {
-    border-color: var(--line);
-  }
-
   body {
-    background: var(--bg);
-    color: var(--fg);
+    background-color: #fafafa;
+    color: #18181b;
     font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
   }
 
   ::selection {
-    background: var(--orange);
-    color: #121212;
+    background-color: rgba(99, 102, 241, 0.2);
+    color: #1e1b4b;
   }
 }
 
 @layer utilities {
-  .notch-cta {
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
-  }
-
-  .notch-card {
-    clip-path: polygon(
-      0 0,
-      calc(100% - 20px) 0,
-      100% 20px,
-      100% 100%,
-      20px 100%,
-      0 calc(100% - 20px)
-    );
-  }
-
-  .notch-tab {
-    clip-path: polygon(
-      0 0,
-      100% 0,
-      100% calc(100% - 10px),
-      calc(100% - 10px) 100%,
-      10px 100%,
-      0 calc(100% - 10px)
-    );
-  }
-
-  .notch-banner {
-    clip-path: polygon(
-      20px 0,
-      100% 0,
-      100% calc(100% - 24px),
-      calc(100% - 24px) 100%,
-      0 100%,
-      0 20px
-    );
-  }
-
-  .bg-blueprint {
-    background-image:
-      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-    background-size: 36px 36px;
-  }
-
-  .bg-stipple {
-    background-image: radial-gradient(var(--stipple) 0.7px, transparent 0.8px);
-    background-size: 5px 5px;
-  }
-
-  .bg-grain {
-    background-image: radial-gradient(var(--stipple) 0.45px, transparent 0.55px);
-    background-size: 3px 3px;
-  }
-
-  .bg-stipple-light {
-    background-image: radial-gradient(rgba(232, 227, 213, 0.42) 0.75px, transparent 0.85px);
-    background-size: 5px 5px;
-  }
-
-  .bg-hatch {
-    background-image: repeating-linear-gradient(
-      -45deg,
-      var(--line) 0,
-      var(--line) 1px,
-      transparent 1px,
-      transparent 5px
-    );
-  }
-
-  .name-stipple {
-    padding-top: 0.16em;
-    padding-bottom: 0.08em;
-    background-image:
-      radial-gradient(rgba(232, 227, 213, 0.28) 0.55px, transparent 0.7px),
-      linear-gradient(#121212, #121212);
-    background-size: 3px 3px, 100% 100%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-  }
-
-  .divider-dots {
-    height: 6px;
-    background-image: radial-gradient(circle, var(--muted) 0.7px, transparent 0.8px);
-    background-size: 8px 6px;
-    background-repeat: repeat-x;
-    background-position: center;
-  }
-
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -182,13 +31,5 @@
   .hide-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
-  }
-
-  .github-calendar {
-    font-family: var(--font-jetbrains), ui-monospace, monospace;
-  }
-
-  .github-calendar text {
-    fill: var(--muted);
   }
 }
